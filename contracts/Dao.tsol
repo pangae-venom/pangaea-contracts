@@ -1,0 +1,270 @@
+pragma ever-solidity >= 0.61.2;
+
+pragma AbiHeader expire;
+pragma AbiHeader time;
+pragma AbiHeader pubkey;
+
+
+contract Dao {
+    uint256 static _nonce;
+    uint32 _numOfProposals;
+    uint32 _numOfTasks;
+    uint64 _memberUID;
+    uint128 _numOfComments;
+    uint256 _managerPublicKey;
+
+    mapping(address => bool) memberExists;
+    uint32[] _map1;
+    uint32 _value;
+
+    event MemberAdded(address member);
+    event TaskCreated(address owner,uint32 TaskId);
+    event TaskClaimed(address member,uint32 TaskId);
+    event TaskSubmitted(address member,uint32 TaskId);
+    event TaskReviewStarted(uint32 TaskId);
+    event TaskCompleted(address member,uint32 TaskId);
+    event TaskCancelled(uint32 TaskId);
+    event CommentPosted(uint32 TaskId,address member, uint128 CommentId);
+
+    struct Member {
+        uint64 uid;
+        string name;
+        uint128 points;
+        uint128 earned;
+        uint128 assigned;
+    }
+
+    mapping(address => Member) members;
+
+    enum VoteStatus {
+        NotAvailable,
+        InProgress,
+        Passed,
+        Failed
+    }
+
+    struct Vote {
+        uint32 startTime;
+        uint32 endTime;
+        uint32 yes;
+        uint32 no;
+        uint32 abstain;
+        VoteStatus status;
+    }
+
+    enum AssigneeStatus {
+        Claimed,
+        Submitted,
+        Cancelled
+    }
+
+    struct TaskAssignee {
+        AssigneeStatus status;
+        string submission;
+    }
+
+    mapping(address => mapping( uint32 => TaskAssignee)) assigneeToTask;
+
+    enum TaskStatus {
+        InProgress,
+        UnderReview,
+        Accepted,
+        Rejected
+    }
+
+    struct Comment {
+        uint32 postTime;
+        address commenter;
+        string comment;
+    }
+
+    mapping(uint128 => Comment) comments;
+
+    struct Task {
+        uint32 startTime;
+        uint32 endTime;
+        uint32 points;
+        uint128 bounty;
+        address owner;
+        address[] assignees;
+        address winner;
+        uint128[] comments;
+        string title;
+        string description;
+        TaskStatus status;
+    }
+
+    mapping(uint32 => Task) tasks;
+
+    struct Proposal {
+        address creator;
+        string description;
+    }
+
+    mapping(uint32 => Proposal) proposals;
+
+    constructor(
+        uint256 managerPublicKey,
+        address sendRemainingGasTo
+    ) public {
+        tvm.accept();
+        tvm.rawReserve(0.1 ever, 0);
+        _managerPublicKey = managerPublicKey;
+        sendRemainingGasTo.transfer({ value: 0, flag: 128, bounce: false });
+    }
+
+    function joinDao(string name) external {
+        require(memberExists[msg.sender] == false, 101);
+        tvm.rawReserve(1 ever, 0);
+
+        _memberUID++;
+        memberExists[msg.sender] = true;
+        members[msg.sender].uid = _memberUID;
+        members[msg.sender].name = name;
+        msg.sender.transfer({value: 0, flag: 128, bounce: false});
+        emit MemberAdded(msg.sender);
+    }
+
+    function setValue(uint32 val) public {
+        _value = val;
+    }
+
+    function addMember(uint32 key) public {
+        tvm.accept();
+        //memberExists.add(msg.sender,true);
+        _map1.push(key);
+        emit MemberAdded(msg.sender);
+    }
+
+    function isMember(address person) external view returns (bool exists) {
+        return memberExists[person];
+    }
+
+    function createTask(string title, string description,uint32 duration,uint32 points,uint128 bounty) external {
+        if (memberExists[msg.sender] == false || bounty > 1 ever + msg.value) {
+            msg.sender.transfer({ value: 0, flag: 128, bounce: false });
+        }
+        tvm.rawReserve(1 ever, 0);
+        
+        _numOfTasks++;
+        tasks[_numOfTasks].startTime = now;
+        tasks[_numOfTasks].endTime = now + duration;
+        tasks[_numOfTasks].title = title;
+        tasks[_numOfTasks].description = description;
+        tasks[_numOfTasks].owner = msg.sender;
+        tasks[_numOfTasks].points = points;
+        tasks[_numOfTasks].bounty = bounty;
+        tasks[_numOfTasks].status = TaskStatus.InProgress;
+
+        members[msg.sender].assigned += bounty;
+
+        emit TaskCreated(msg.sender,_numOfTasks);
+    }
+
+    function claimTask(uint32 taskID) external {
+        require(memberExists[msg.sender] == true,102);
+        // add rawreserve. Pay it back later
+        tvm.accept();
+
+        Task temp = tasks[taskID];
+        require(now >= temp.startTime && now < temp.endTime,151);
+        require(temp.status == TaskStatus.InProgress,152);
+
+        tasks[taskID].assignees.push(msg.sender);
+        assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Claimed;
+
+        emit TaskClaimed(msg.sender,taskID);
+    }
+
+    function submitTask(uint32 taskID,string submission) external {
+
+        require(memberExists[msg.sender] == true,102);
+        tvm.accept();
+
+        Task temp = tasks[taskID];
+        require(now >= temp.startTime && now < temp.endTime,151);
+        require(temp.status == TaskStatus.InProgress,152);
+        require(assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Claimed,153);
+
+        assigneeToTask[msg.sender][taskID].submission = submission;
+        assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Submitted;
+
+        emit TaskSubmitted(msg.sender,taskID);
+    }
+
+    function startReview(uint32 taskID) external {
+        Task temp = tasks[taskID];
+        require(temp.owner == msg.sender,154);
+        require(now > temp.endTime,155);
+        require(temp.status == TaskStatus.InProgress,152);
+
+        tasks[taskID].status = TaskStatus.UnderReview;
+
+        emit TaskReviewStarted(taskID);
+    }
+
+    function finishReview(uint32 taskID,address winner) external {
+        Task temp = tasks[taskID];
+        require(temp.owner == msg.sender,154);
+        require(temp.status == TaskStatus.UnderReview,152);
+
+        tasks[taskID].status = TaskStatus.Accepted;
+
+        uint128 bounty = temp.bounty;
+        winner.transfer({ value: bounty, flag: 128, bounce: false});
+
+        members[msg.sender].assigned -= bounty;
+        members[winner].earned += bounty;
+        members[winner].points += temp.points;
+        tasks[taskID].winner = winner;
+
+        emit TaskCompleted(winner,taskID);
+    }
+
+    function addComment(uint32 taskID, string message) external {
+        require(memberExists[msg.sender] == true,102);
+        tvm.accept();
+
+        Task temp = tasks[taskID];
+        require(now >= temp.startTime && now < temp.endTime,151);
+        require(temp.status == TaskStatus.InProgress,152);
+
+        _numOfComments++;
+        comments[_numOfComments].postTime = now;
+        comments[_numOfComments].commenter = msg.sender;
+        comments[_numOfComments].comment = message;
+
+        tasks[taskID].comments.push(_numOfComments);
+
+        emit CommentPosted(taskID,msg.sender,_numOfComments);
+    }
+
+    function cancelTask(uint32 taskID) external {
+        Task temp = tasks[taskID];
+        require(temp.owner == msg.sender,154);
+        require(temp.status == TaskStatus.InProgress || temp.status == TaskStatus.UnderReview,152);
+
+        tasks[taskID].status = TaskStatus.Rejected;
+
+        uint128 bounty = temp.bounty;
+
+        msg.sender.transfer({ value: bounty, flag: 128, bounce: false});
+        members[msg.sender].assigned -= bounty;
+
+        emit TaskCancelled(taskID);
+    }
+
+    function getMember(address member) external view returns (Member) {
+
+        return members[member];
+    }
+
+    function getTask(uint32 taskID) external view returns (Task) {
+        return tasks[taskID];
+    }
+
+    function getAssigneeToTask(address assignee, uint32 taskID) external view returns (TaskAssignee) {
+        return assigneeToTask[assignee][taskID];
+    }
+
+}

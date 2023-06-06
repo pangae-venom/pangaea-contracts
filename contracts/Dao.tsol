@@ -24,6 +24,9 @@ contract Dao {
     event TaskReviewStarted(uint32 TaskId);
     event TaskCompleted(address member,uint32 TaskId);
     event TaskCancelled(uint32 TaskId);
+    event ProposalCreated(address owner,uint32 ProposalId);
+    event MemberVoted(address member,uint32 ProposalId);
+    event VoteFinalized(uint32 ProposalID);
     event CommentPosted(uint32 TaskId,address member, uint128 CommentId);
 
     struct Member {
@@ -32,6 +35,9 @@ contract Dao {
         uint128 points;
         uint128 earned;
         uint128 assigned;
+        uint32 acceptedTasks;
+        uint32 appliedTasks;
+        uint32 accumulatedVotes;
     }
 
     mapping(address => Member) members;
@@ -55,7 +61,8 @@ contract Dao {
     enum AssigneeStatus {
         Claimed,
         Submitted,
-        Cancelled
+        Cancelled,
+        NotAssigned
     }
 
     struct TaskAssignee {
@@ -98,10 +105,14 @@ contract Dao {
 
     struct Proposal {
         address creator;
+        uint32 createdTime;
+        string title;
         string description;
     }
 
     mapping(uint32 => Proposal) proposals;
+    mapping(uint32 => Vote) votes;
+    mapping(address => mapping(uint32 => bool)) memberVote;
 
     constructor(
         uint256 managerPublicKey,
@@ -163,8 +174,9 @@ contract Dao {
 
     function claimTask(uint32 taskID) external {
         require(memberExists[msg.sender] == true,102);
+        require(assigneeToTask[msg.sender][taskID].status == AssigneeStatus.NotAssigned,153);
         // add rawreserve. Pay it back later
-        tvm.accept();
+        //tvm.accept();
 
         Task temp = tasks[taskID];
         require(now >= temp.startTime && now < temp.endTime,151);
@@ -172,6 +184,7 @@ contract Dao {
 
         tasks[taskID].assignees.push(msg.sender);
         assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Claimed;
+        members[msg.sender].appliedTasks += 1;
 
         emit TaskClaimed(msg.sender,taskID);
     }
@@ -190,6 +203,56 @@ contract Dao {
         assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Submitted;
 
         emit TaskSubmitted(msg.sender,taskID);
+    }
+
+    function createProposal(string title, string description, uint32 duration) external {
+        require(memberExists[msg.sender] == true,102);
+
+        _numOfProposals++;
+        proposals[_numOfProposals].title = title;
+        proposals[_numOfProposals].description = description;
+        proposals[_numOfProposals].creator = msg.sender;
+        proposals[_numOfProposals].createdTime = now;
+
+        votes[_numOfProposals].startTime = now;
+        votes[_numOfProposals].endTime = now + duration;
+        votes[_numOfProposals].status = VoteStatus.InProgress;
+
+        emit ProposalCreated(msg.sender,_numOfProposals);
+    }
+
+    function castVote(uint32 proposalID,uint8 val) external {
+        require(memberExists[msg.sender] == true,102);
+        require(memberVote[msg.sender][proposalID] == false, 171);
+        require(val <= 2,181);
+        require(votes[proposalID].endTime >= now && votes[proposalID].status == VoteStatus.InProgress, 182);
+
+        if (val == 0) {
+            votes[proposalID].yes +=1;
+        } else if (val == 1) {
+            votes[proposalID].no +=1;
+        } else {
+            votes[proposalID].abstain +=1;
+        }
+
+        memberVote[msg.sender][proposalID] = true;
+
+        emit MemberVoted(msg.sender,proposalID);
+    }
+
+    function finalizeVote(uint32 proposalID) external {
+        require(memberExists[msg.sender] == true,102);
+        require(votes[proposalID].endTime < now && votes[proposalID].status == VoteStatus.InProgress, 182);
+
+        tvm.accept();
+
+        if (votes[proposalID].yes > votes[proposalID].no + votes[proposalID].abstain) {
+            votes[proposalID].status = VoteStatus.Passed;
+        } else {
+            votes[proposalID].status = VoteStatus.Failed;
+        }
+
+        emit VoteFinalized(proposalID);
     }
 
     function startReview(uint32 taskID) external {
@@ -217,6 +280,7 @@ contract Dao {
         members[winner].earned += bounty;
         members[winner].points += temp.points;
         tasks[taskID].winner = winner;
+        members[winner].acceptedTasks += 1;
 
         emit TaskCompleted(winner,taskID);
     }
@@ -265,6 +329,14 @@ contract Dao {
 
     function getAssigneeToTask(address assignee, uint32 taskID) external view returns (TaskAssignee) {
         return assigneeToTask[assignee][taskID];
+    }
+
+    function getProposal(uint32 proposalID) external view returns (Proposal) {
+        return proposals[proposalID];
+    }
+
+    function getVote(uint32 proposalID) external view returns (Vote) {
+        return votes[proposalID];
     }
 
 }

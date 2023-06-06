@@ -161,5 +161,36 @@ describe("Test Dao contract", async function () {
       expect(Number(res4.value0.points)).to.be.equal(100, "Wrong value");
     });
 
+    it("creates a proposal", async function() {
+      const title = "Proposal 1";
+      const description = "First Proposal";
+      const duration = 1000;
+
+      await dao.methods.createProposal({title:title,description: description,duration:duration}).send({from:account1.address,amount:locklift.utils.toNano(1)});
+
+      const res = await dao.methods.getProposal({proposalID: 1}).call();
+      expect(res.value0.title).to.be.equal(title, "Wrong value");
+
+      const res2 = await dao.methods.getVote({proposalID: 1}).call();
+      expect(Number(res2.value0.status)).to.be.equal(1, "Wrong value");
+    });
+
+    it("votes on a proposal", async function() {
+      await locklift.testing.increaseTime(100);
+
+      //account 2 votes yes
+
+      await dao.methods.castVote({proposalID: 1,val: 0}).send({from:account2.address,amount:locklift.utils.toNano(1)});
+      const res2 = await dao.methods.getVote({proposalID: 1}).call();
+      expect(Number(res2.value0.yes)).to.be.equal(1, "Wrong value");
+
+      await locklift.testing.increaseTime(1000);
+
+      await dao.methods.finalizeVote({proposalID: 1}).send({from:account2.address,amount:locklift.utils.toNano(1)});
+      const res3 = await dao.methods.getVote({proposalID: 1}).call();
+      expect(Number(res3.value0.status)).to.be.equal(2, "Wrong value");
+
+    })
+
   });
 });

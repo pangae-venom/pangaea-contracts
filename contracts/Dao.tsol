@@ -120,7 +120,7 @@ contract Dao {
         address sendRemainingGasTo
     ) public {
         tvm.accept();
-        tvm.rawReserve(0.1 ever, 0);
+        tvm.rawReserve(1 ever, 0);
         _managerPublicKey = managerPublicKey;
         sendRemainingGasTo.transfer({ value: 0, flag: 128, bounce: false });
     }

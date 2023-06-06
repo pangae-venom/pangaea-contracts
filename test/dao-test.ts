@@ -45,7 +45,7 @@ describe("Test Dao contract", async function () {
             managerPublicKey: `0x${signer.publicKey}`,
             sendRemainingGasTo: new Address("0:1c1752495dd9f211768daabb0b3df74750859da85330d4ebcc4fddc11b093ff8")
         },
-        value: locklift.utils.toNano(2),
+        value: locklift.utils.toNano(3),
       });
       dao = contract;
 

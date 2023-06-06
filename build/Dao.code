@@ -22,7 +22,7 @@ ENDS
 .loc ../contracts/Dao.tsol, 122
 ACCEPT
 .loc ../contracts/Dao.tsol, 123
-PUSHINT 100000000
+PUSHINT 1000000000
 PUSHINT 0
 RAWRESERVE
 .loc ../contracts/Dao.tsol, 124

@@ -99,7 +99,7 @@ DICTSETB
 SETGLOB 16
 .loc ../contracts/Dao.tsol, 134
 GETGLOB 9
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -113,24 +113,35 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 GETGLOB 13
 SETINDEX 0
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -140,13 +151,22 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
 DUP
-SETGLOB 19
+SETGLOB 17
 .loc ../contracts/Dao.tsol, 135
 GETGLOB 9
 TUCK
@@ -163,24 +183,35 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 ROLL 3
 SETINDEX 1
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -190,12 +221,21 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
+SETGLOB 17
 .loc ../contracts/Dao.tsol, 136
 GETGLOB 9
 NEWC
@@ -217,91 +257,6 @@ PUSHINT 0
 SENDRAWMSG
 .loc ../contracts/Dao.tsol, 0
 
-.macro setValue
-DROP
-GETGLOB 6
-THROWIFNOT 76
-GETGLOB 2
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-.loc ../contracts/Dao.tsol, 140
-LDU 32
-ENDS
-.loc ../contracts/Dao.tsol, 0
-CALLREF {
-	CALL $setValue_fb693f77_internal_macro$
-}
-DROP
-CALLREF {
-	CALL $c7_to_c4$
-}
-THROW 0
-
-.globl	setValue_fb693f77_internal
-.type	setValue_fb693f77_internal, @function
-CALL $setValue_fb693f77_internal_macro$
-
-.macro setValue_fb693f77_internal_macro
-.loc ../contracts/Dao.tsol, 141
-SETGLOB 18
-.loc ../contracts/Dao.tsol, 0
-
-.macro addMember
-DROP
-GETGLOB 6
-THROWIFNOT 76
-GETGLOB 2
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-.loc ../contracts/Dao.tsol, 144
-LDU 32
-ENDS
-.loc ../contracts/Dao.tsol, 0
-CALLREF {
-	CALL $addMember_0a5bb8f9_internal_macro$
-}
-DROP
-CALLREF {
-	CALL $c7_to_c4$
-}
-THROW 0
-
-.globl	addMember_0a5bb8f9_internal
-.type	addMember_0a5bb8f9_internal, @function
-CALL $addMember_0a5bb8f9_internal_macro$
-
-.macro addMember_0a5bb8f9_internal_macro
-.loc ../contracts/Dao.tsol, 145
-ACCEPT
-.loc ../contracts/Dao.tsol, 147
-GETGLOB 17
-SWAP
-NEWC
-STU 32
-SWAP
-UNPAIR
-OVER
-INC
-ROLLREV 3
-PUSHINT 32
-DICTUSETB
-PAIR
-SETGLOB 17
-.loc ../contracts/Dao.tsol, 148
-GETGLOB 9
-PUSHSLICE xc000000000000000000000000056353a42
-NEWC
-STSLICE
-STSLICE
-ENDC
-PUSHINT 0
-SENDRAWMSG
-.loc ../contracts/Dao.tsol, 0
-
 .macro isMember
 DROP
 GETGLOB 6
@@ -311,7 +266,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 151
+.loc ../contracts/Dao.tsol, 140
 OVER
 PUSHCONT {
 	LDREF
@@ -353,7 +308,7 @@ IFREF {
 THROW 0
 
 .macro isMember_a230c524_internal_macro
-.loc ../contracts/Dao.tsol, 152
+.loc ../contracts/Dao.tsol, 141
 GETGLOB 16
 PUSHINT 267
 DICTGET
@@ -373,7 +328,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 155
+.loc ../contracts/Dao.tsol, 144
 OVER
 PUSHCONT {
 	LDREF
@@ -404,7 +359,7 @@ CALLREF {
 THROW 0
 
 .macro createTask_add5f18f_internal_macro
-.loc ../contracts/Dao.tsol, 156
+.loc ../contracts/Dao.tsol, 145
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -430,7 +385,7 @@ PUSHCONT {
 }
 IFNOT
 PUSHCONT {
-	.loc ../contracts/Dao.tsol, 157
+	.loc ../contracts/Dao.tsol, 146
 	GETGLOB 9
 	NEWC
 	STSLICECONST x42_
@@ -443,18 +398,18 @@ PUSHCONT {
 	.loc ../contracts/Dao.tsol, 0
 }
 IF
-.loc ../contracts/Dao.tsol, 159
+.loc ../contracts/Dao.tsol, 148
 PUSHINT 1000000000
 PUSHINT 0
 RAWRESERVE
-.loc ../contracts/Dao.tsol, 161
+.loc ../contracts/Dao.tsol, 150
 GETGLOB 12
 INC
 UFITS 32
 DUP
 SETGLOB 12
-.loc ../contracts/Dao.tsol, 162
-GETGLOB 22
+.loc ../contracts/Dao.tsol, 151
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -545,14 +500,14 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 163
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 152
 NOW
 ROLL 3
 ADD
 UFITS 32
 GETGLOB 12
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -643,11 +598,11 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 164
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 153
 ROLL 3
 GETGLOB 12
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -738,11 +693,11 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 165
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 154
 ROT
 GETGLOB 12
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -834,8 +789,8 @@ ROTREV
 PUSHINT 32
 DICTUSETREF
 DUP
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 166
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 155
 GETGLOB 12
 TUCK
 OVER
@@ -928,11 +883,11 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 167
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 156
 SWAP
 GETGLOB 12
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -1023,11 +978,11 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 168
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 157
 DUP
 GETGLOB 12
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -1119,8 +1074,8 @@ ROTREV
 PUSHINT 32
 DICTUSETREF
 DUP
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 169
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 158
 GETGLOB 12
 TUCK
 OVER
@@ -1213,10 +1168,10 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 171
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 160
 GETGLOB 9
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -1230,18 +1185,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 INDEX 4
@@ -1250,8 +1216,8 @@ ADD
 UFITS 128
 SETINDEX 4
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -1261,13 +1227,104 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 173
+DUP
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 161
+GETGLOB 9
+TUCK
+OVER
+PUSHINT 267
+DICTGET
+IFREFELSEREF
+{
+	LDU 64
+	LDREF
+	LDU 128
+	LDU 128
+	LDU 128
+	LDU 32
+	LDU 32
+	LDU 32
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	ENDS
+	TUPLE 10
+}
+{
+	PUSHINT 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	BLKPUSH 6, 0
+	NEWDICT
+	PAIR
+	DUP
+	TUPLE 10
+}
+DUP
+INDEX 8
+GETGLOB 12
+NEWC
+STU 32
+SWAP
+UNPAIR
+OVER
+INC
+ROLLREV 3
+PUSHINT 32
+DICTUSETB
+PAIR
+SETINDEX 8
+CALLREF {
+	UNTUPLE 10
+	REVERSE 10, 0
+	NEWC
+	STU 64
+	STREF
+	STU 128
+	STU 128
+	STU 128
+	STU 32
+	STU 32
+	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+}
+ROTREV
+PUSHINT 267
+DICTSETB
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 163
 GETGLOB 12
 GETGLOB 9
 PUSHSLICE xc00000000000000000000000003f67b553
@@ -1289,7 +1346,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 176
+.loc ../contracts/Dao.tsol, 166
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -1303,7 +1360,7 @@ CALLREF {
 THROW 0
 
 .macro claimTask_553f67bb_internal_macro
-.loc ../contracts/Dao.tsol, 177
+.loc ../contracts/Dao.tsol, 167
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -1316,36 +1373,19 @@ IF
 TRUE
 EQUAL
 THROWIFNOT 102
-.loc ../contracts/Dao.tsol, 178
+.loc ../contracts/Dao.tsol, 168
 DUP
 GETGLOB 9
-GETGLOB 19
+GETGLOB 18
 PUSHINT 267
 DICTGET
-IFREFELSEREF
-{
-	LDU 64
-	LDREF
-	LDU 128
-	LDU 128
-	LDU 128
-	LDU 32
-	LDU 32
-	LDU 32
-	LDDICT
-	ENDS
-	TUPLE 9
+PUSHCONT {
+	PLDDICT
 }
-{
-	PUSHINT 0
-	PUSHREF {
-	}
-	PUSHINT 0
-	BLKPUSH 5, 0
+PUSHCONT {
 	NEWDICT
-	TUPLE 9
 }
-INDEX 8
+IFELSE
 PUSHINT 32
 DICTUGET
 ZEROSWAPIFNOT
@@ -1356,9 +1396,9 @@ IF
 FALSE
 EQUAL
 THROWIFNOT 158
-.loc ../contracts/Dao.tsol, 182
+.loc ../contracts/Dao.tsol, 172
 DUP
-GETGLOB 22
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -1415,7 +1455,7 @@ PUSHCONT {
 	TUPLE 11
 }
 IFELSE
-.loc ../contracts/Dao.tsol, 183
+.loc ../contracts/Dao.tsol, 173
 NOW
 OVER
 FIRST
@@ -1426,12 +1466,12 @@ SECOND
 LESS
 AND
 THROWIFNOT 151
-.loc ../contracts/Dao.tsol, 184
+.loc ../contracts/Dao.tsol, 174
 INDEX 10
 THROWIF 152
-.loc ../contracts/Dao.tsol, 186
+.loc ../contracts/Dao.tsol, 176
 DUP
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -1532,10 +1572,10 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 187
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 177
 GETGLOB 9
-GETGLOB 20
+GETGLOB 19
 DUP2
 PUSHINT 267
 DICTGET
@@ -1583,10 +1623,10 @@ STDICT
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 20
-.loc ../contracts/Dao.tsol, 188
+SETGLOB 19
+.loc ../contracts/Dao.tsol, 178
 GETGLOB 9
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -1600,18 +1640,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 INDEX 6
@@ -1619,8 +1670,8 @@ INC
 UFITS 32
 SETINDEX 6
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -1630,70 +1681,47 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-DUP
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 189
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 179
 GETGLOB 9
-TUCK
-OVER
+GETGLOB 18
+DUP2
 PUSHINT 267
 DICTGET
-IFREFELSEREF
-{
-	LDU 64
-	LDREF
-	LDU 128
-	LDU 128
-	LDU 128
-	LDU 32
-	LDU 32
-	LDU 32
-	LDDICT
-	ENDS
-	TUPLE 9
+PUSHCONT {
+	PLDDICT
 }
-{
-	PUSHINT 0
-	PUSHREF {
-	}
-	PUSHINT 0
-	BLKPUSH 5, 0
+PUSHCONT {
 	NEWDICT
-	TUPLE 9
 }
-DUP
-INDEX 8
-PUXC S4, S-1
+IFELSE
+PUXC S3, S-1
 NEWC
 STONE
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETINDEX 8
-CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
-	NEWC
-	STU 64
-	STREF
-	STU 128
-	STU 128
-	STU 128
-	STU 32
-	STU 32
-	STU 32
-	STDICT
-}
+NEWC
+STDICT
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 191
+SETGLOB 18
+.loc ../contracts/Dao.tsol, 181
 GETGLOB 9
 PUSHSLICE xc00000000000000000000000004c9d5312
 NEWC
@@ -1714,7 +1742,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 194
+.loc ../contracts/Dao.tsol, 184
 LDU 32
 LDREF
 ENDS
@@ -1729,7 +1757,7 @@ CALLREF {
 THROW 0
 
 .macro submitTask_75fa2463_internal_macro
-.loc ../contracts/Dao.tsol, 196
+.loc ../contracts/Dao.tsol, 186
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -1742,11 +1770,11 @@ IF
 TRUE
 EQUAL
 THROWIFNOT 102
-.loc ../contracts/Dao.tsol, 197
+.loc ../contracts/Dao.tsol, 187
 ACCEPT
-.loc ../contracts/Dao.tsol, 199
+.loc ../contracts/Dao.tsol, 189
 OVER
-GETGLOB 22
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -1803,7 +1831,7 @@ PUSHCONT {
 	TUPLE 11
 }
 IFELSE
-.loc ../contracts/Dao.tsol, 200
+.loc ../contracts/Dao.tsol, 190
 NOW
 OVER
 FIRST
@@ -1814,13 +1842,13 @@ SECOND
 LESS
 AND
 THROWIFNOT 151
-.loc ../contracts/Dao.tsol, 201
+.loc ../contracts/Dao.tsol, 191
 INDEX 10
 THROWIF 152
-.loc ../contracts/Dao.tsol, 202
+.loc ../contracts/Dao.tsol, 192
 OVER
 GETGLOB 9
-GETGLOB 20
+GETGLOB 19
 PUSHINT 267
 DICTGET
 PUSHCONT {
@@ -1850,9 +1878,9 @@ IFREFELSEREF
 }
 FIRST
 THROWIF 153
-.loc ../contracts/Dao.tsol, 204
+.loc ../contracts/Dao.tsol, 194
 GETGLOB 9
-GETGLOB 20
+GETGLOB 19
 DUP2
 PUSHINT 267
 DICTGET
@@ -1901,8 +1929,8 @@ ROTREV
 PUSHINT 267
 DICTSETB
 DUP
-SETGLOB 20
-.loc ../contracts/Dao.tsol, 205
+SETGLOB 19
+.loc ../contracts/Dao.tsol, 195
 GETGLOB 9
 TUCK
 OVER
@@ -1952,8 +1980,8 @@ STDICT
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 20
-.loc ../contracts/Dao.tsol, 207
+SETGLOB 19
+.loc ../contracts/Dao.tsol, 197
 GETGLOB 9
 PUSHSLICE xc00000000000000000000000001ac09dec
 NEWC
@@ -1974,7 +2002,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 210
+.loc ../contracts/Dao.tsol, 200
 LDREF
 LDREF
 LDU 32
@@ -1990,7 +2018,7 @@ CALLREF {
 THROW 0
 
 .macro createProposal_d9bc438a_internal_macro
-.loc ../contracts/Dao.tsol, 211
+.loc ../contracts/Dao.tsol, 201
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -2003,15 +2031,15 @@ IF
 TRUE
 EQUAL
 THROWIFNOT 102
-.loc ../contracts/Dao.tsol, 213
+.loc ../contracts/Dao.tsol, 203
 GETGLOB 11
 INC
 UFITS 32
 SETGLOB 11
-.loc ../contracts/Dao.tsol, 214
+.loc ../contracts/Dao.tsol, 204
 ROT
 GETGLOB 11
-GETGLOB 23
+GETGLOB 22
 DUP2
 PUSHINT 32
 DICTUGET
@@ -2048,11 +2076,11 @@ CALLREF {
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETGLOB 23
-.loc ../contracts/Dao.tsol, 215
+SETGLOB 22
+.loc ../contracts/Dao.tsol, 205
 SWAP
 GETGLOB 11
-GETGLOB 23
+GETGLOB 22
 DUP2
 PUSHINT 32
 DICTUGET
@@ -2090,8 +2118,8 @@ ROTREV
 PUSHINT 32
 DICTUSETB
 DUP
-SETGLOB 23
-.loc ../contracts/Dao.tsol, 216
+SETGLOB 22
+.loc ../contracts/Dao.tsol, 206
 GETGLOB 11
 TUCK
 OVER
@@ -2131,8 +2159,8 @@ ROTREV
 PUSHINT 32
 DICTUSETB
 DUP
-SETGLOB 23
-.loc ../contracts/Dao.tsol, 217
+SETGLOB 22
+.loc ../contracts/Dao.tsol, 207
 GETGLOB 11
 TUCK
 OVER
@@ -2171,10 +2199,10 @@ CALLREF {
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETGLOB 23
-.loc ../contracts/Dao.tsol, 219
+SETGLOB 22
+.loc ../contracts/Dao.tsol, 209
 GETGLOB 11
-GETGLOB 24
+GETGLOB 23
 DUP2
 PUSHINT 32
 DICTUGET
@@ -2213,13 +2241,13 @@ CALLREF {
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETGLOB 24
-.loc ../contracts/Dao.tsol, 220
+SETGLOB 23
+.loc ../contracts/Dao.tsol, 210
 NOW
 ADD
 UFITS 32
 GETGLOB 11
-GETGLOB 24
+GETGLOB 23
 DUP2
 PUSHINT 32
 DICTUGET
@@ -2259,8 +2287,8 @@ ROTREV
 PUSHINT 32
 DICTUSETB
 DUP
-SETGLOB 24
-.loc ../contracts/Dao.tsol, 221
+SETGLOB 23
+.loc ../contracts/Dao.tsol, 211
 GETGLOB 11
 TUCK
 OVER
@@ -2301,8 +2329,89 @@ CALLREF {
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETGLOB 24
-.loc ../contracts/Dao.tsol, 223
+SETGLOB 23
+.loc ../contracts/Dao.tsol, 213
+GETGLOB 9
+GETGLOB 17
+DUP2
+PUSHINT 267
+DICTGET
+IFREFELSEREF
+{
+	LDU 64
+	LDREF
+	LDU 128
+	LDU 128
+	LDU 128
+	LDU 32
+	LDU 32
+	LDU 32
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	ENDS
+	TUPLE 10
+}
+{
+	PUSHINT 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	BLKPUSH 6, 0
+	NEWDICT
+	PAIR
+	DUP
+	TUPLE 10
+}
+DUP
+INDEX 9
+GETGLOB 11
+NEWC
+STU 32
+SWAP
+UNPAIR
+OVER
+INC
+ROLLREV 3
+PUSHINT 32
+DICTUSETB
+PAIR
+SETINDEX 9
+CALLREF {
+	UNTUPLE 10
+	REVERSE 10, 0
+	NEWC
+	STU 64
+	STREF
+	STU 128
+	STU 128
+	STU 128
+	STU 32
+	STU 32
+	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+}
+ROTREV
+PUSHINT 267
+DICTSETB
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 215
 GETGLOB 11
 GETGLOB 9
 PUSHSLICE xc0000000000000000000000000374c4c67
@@ -2324,7 +2433,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 226
+.loc ../contracts/Dao.tsol, 218
 LDU 32
 LDU 8
 ENDS
@@ -2339,7 +2448,7 @@ CALLREF {
 THROW 0
 
 .macro castVote_b68be84f_internal_macro
-.loc ../contracts/Dao.tsol, 227
+.loc ../contracts/Dao.tsol, 219
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -2352,10 +2461,10 @@ IF
 TRUE
 EQUAL
 THROWIFNOT 102
-.loc ../contracts/Dao.tsol, 228
+.loc ../contracts/Dao.tsol, 220
 OVER
 GETGLOB 9
-GETGLOB 25
+GETGLOB 24
 PUSHINT 267
 DICTGET
 PUSHCONT {
@@ -2375,13 +2484,13 @@ IF
 FALSE
 EQUAL
 THROWIFNOT 171
-.loc ../contracts/Dao.tsol, 229
+.loc ../contracts/Dao.tsol, 221
 DUP
 LESSINT 3
 THROWIFNOT 181
-.loc ../contracts/Dao.tsol, 230
+.loc ../contracts/Dao.tsol, 222
 OVER
-GETGLOB 24
+GETGLOB 23
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -2410,7 +2519,7 @@ DUP
 PUSHCONT {
 	DROP
 	OVER
-	GETGLOB 24
+	GETGLOB 23
 	PUSHINT 32
 	DICTUGET
 IFREFELSEREF
@@ -2437,15 +2546,15 @@ IFREFELSEREF
 }
 IF
 THROWIFNOT 182
-.loc ../contracts/Dao.tsol, 232
+.loc ../contracts/Dao.tsol, 224
 DUP
 PUSHCONT {
 	DUP
 	EQINT 1
 	PUSHCONT {
-		.loc ../contracts/Dao.tsol, 235
+		.loc ../contracts/Dao.tsol, 227
 		OVER
-		GETGLOB 24
+		GETGLOB 23
 		DUP2
 		PUSHINT 32
 		DICTUGET
@@ -2475,9 +2584,9 @@ IFREFELSEREF
 		SETINDEX 3
 	}
 	PUSHCONT {
-		.loc ../contracts/Dao.tsol, 237
+		.loc ../contracts/Dao.tsol, 229
 		OVER
-		GETGLOB 24
+		GETGLOB 23
 		DUP2
 		PUSHINT 32
 		DICTUGET
@@ -2509,9 +2618,9 @@ IFREFELSEREF
 	IFELSE
 }
 PUSHCONT {
-	.loc ../contracts/Dao.tsol, 233
+	.loc ../contracts/Dao.tsol, 225
 	OVER
-	GETGLOB 24
+	GETGLOB 23
 	DUP2
 	PUSHINT 32
 	DICTUGET
@@ -2555,11 +2664,11 @@ CALLREF {
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETGLOB 24
-.loc ../contracts/Dao.tsol, 240
+SETGLOB 23
+.loc ../contracts/Dao.tsol, 232
 DROP
 GETGLOB 9
-GETGLOB 25
+GETGLOB 24
 DUP2
 PUSHINT 267
 DICTGET
@@ -2581,8 +2690,80 @@ STDICT
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 25
-.loc ../contracts/Dao.tsol, 242
+SETGLOB 24
+.loc ../contracts/Dao.tsol, 234
+GETGLOB 9
+GETGLOB 17
+DUP2
+PUSHINT 267
+DICTGET
+IFREFELSEREF
+{
+	LDU 64
+	LDREF
+	LDU 128
+	LDU 128
+	LDU 128
+	LDU 32
+	LDU 32
+	LDU 32
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	ENDS
+	TUPLE 10
+}
+{
+	PUSHINT 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	BLKPUSH 6, 0
+	NEWDICT
+	PAIR
+	DUP
+	TUPLE 10
+}
+DUP
+INDEX 7
+INC
+UFITS 32
+SETINDEX 7
+CALLREF {
+	UNTUPLE 10
+	REVERSE 10, 0
+	NEWC
+	STU 64
+	STREF
+	STU 128
+	STU 128
+	STU 128
+	STU 32
+	STU 32
+	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+}
+ROTREV
+PUSHINT 267
+DICTSETB
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 236
 GETGLOB 9
 PUSHSLICE xc0000000000000000000000000024e0dcf
 NEWC
@@ -2603,7 +2784,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 245
+.loc ../contracts/Dao.tsol, 239
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -2617,7 +2798,7 @@ CALLREF {
 THROW 0
 
 .macro finalizeVote_ab0fad6e_internal_macro
-.loc ../contracts/Dao.tsol, 246
+.loc ../contracts/Dao.tsol, 240
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -2630,9 +2811,9 @@ IF
 TRUE
 EQUAL
 THROWIFNOT 102
-.loc ../contracts/Dao.tsol, 247
+.loc ../contracts/Dao.tsol, 241
 DUP
-GETGLOB 24
+GETGLOB 23
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -2661,7 +2842,7 @@ DUP
 PUSHCONT {
 	DROP
 	DUP
-	GETGLOB 24
+	GETGLOB 23
 	PUSHINT 32
 	DICTUGET
 IFREFELSEREF
@@ -2688,11 +2869,11 @@ IFREFELSEREF
 }
 IF
 THROWIFNOT 182
-.loc ../contracts/Dao.tsol, 249
+.loc ../contracts/Dao.tsol, 243
 ACCEPT
-.loc ../contracts/Dao.tsol, 251
+.loc ../contracts/Dao.tsol, 245
 DUP
-GETGLOB 24
+GETGLOB 23
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -2716,7 +2897,7 @@ IFREFELSEREF
 }
 THIRD
 OVER
-GETGLOB 24
+GETGLOB 23
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -2740,7 +2921,7 @@ IFREFELSEREF
 }
 INDEX 3
 PUSH S2
-GETGLOB 24
+GETGLOB 23
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -2767,9 +2948,9 @@ ADD
 UFITS 32
 GREATER
 PUSHCONT {
-	.loc ../contracts/Dao.tsol, 252
+	.loc ../contracts/Dao.tsol, 246
 	DUP
-	GETGLOB 24
+	GETGLOB 23
 	DUP2
 	PUSHINT 32
 	DICTUGET
@@ -2795,9 +2976,9 @@ IFREFELSEREF
 	PUSHINT 2
 }
 PUSHCONT {
-	.loc ../contracts/Dao.tsol, 254
+	.loc ../contracts/Dao.tsol, 248
 	DUP
-	GETGLOB 24
+	GETGLOB 23
 	DUP2
 	PUSHINT 32
 	DICTUGET
@@ -2838,8 +3019,8 @@ CALLREF {
 ROTREV
 PUSHINT 32
 DICTUSETB
-SETGLOB 24
-.loc ../contracts/Dao.tsol, 257
+SETGLOB 23
+.loc ../contracts/Dao.tsol, 251
 PUSHSLICE xc00000000000000000000000000bc87b07
 NEWC
 STSLICE
@@ -2858,7 +3039,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 260
+.loc ../contracts/Dao.tsol, 254
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -2872,9 +3053,9 @@ CALLREF {
 THROW 0
 
 .macro startReview_ab828d95_internal_macro
-.loc ../contracts/Dao.tsol, 261
+.loc ../contracts/Dao.tsol, 255
 DUP
-GETGLOB 22
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -2931,24 +3112,24 @@ PUSHCONT {
 	TUPLE 11
 }
 IFELSE
-.loc ../contracts/Dao.tsol, 262
+.loc ../contracts/Dao.tsol, 256
 DUP
 INDEX 4
 GETGLOB 9
 SDEQ
 THROWIFNOT 154
-.loc ../contracts/Dao.tsol, 263
+.loc ../contracts/Dao.tsol, 257
 NOW
 OVER
 SECOND
 GREATER
 THROWIFNOT 155
-.loc ../contracts/Dao.tsol, 264
+.loc ../contracts/Dao.tsol, 258
 INDEX 10
 THROWIF 152
-.loc ../contracts/Dao.tsol, 266
+.loc ../contracts/Dao.tsol, 260
 DUP
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -3039,8 +3220,8 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 268
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 262
 PUSHSLICE xc00000000000000000000000007a407fd1
 NEWC
 STSLICE
@@ -3059,7 +3240,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 271
+.loc ../contracts/Dao.tsol, 265
 OVER
 PUSHCONT {
 	LDU 32
@@ -3084,9 +3265,9 @@ CALLREF {
 THROW 0
 
 .macro finishReview_0f9587c3_internal_macro
-.loc ../contracts/Dao.tsol, 272
+.loc ../contracts/Dao.tsol, 266
 OVER
-GETGLOB 22
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -3143,20 +3324,20 @@ PUSHCONT {
 	TUPLE 11
 }
 IFELSE
-.loc ../contracts/Dao.tsol, 273
+.loc ../contracts/Dao.tsol, 267
 DUP
 INDEX 4
 GETGLOB 9
 SDEQ
 THROWIFNOT 154
-.loc ../contracts/Dao.tsol, 274
+.loc ../contracts/Dao.tsol, 268
 DUP
 INDEX 10
 EQINT 1
 THROWIFNOT 152
-.loc ../contracts/Dao.tsol, 276
+.loc ../contracts/Dao.tsol, 270
 PUSH S2
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -3247,11 +3428,11 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 278
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 272
 DUP
 INDEX 3
-.loc ../contracts/Dao.tsol, 279
+.loc ../contracts/Dao.tsol, 273
 PUSH2 S0, S2
 NEWC
 STSLICECONST x42_
@@ -3263,10 +3444,10 @@ STZEROES
 ENDC
 PUSHPOW2 7
 SENDRAWMSG
-.loc ../contracts/Dao.tsol, 281
+.loc ../contracts/Dao.tsol, 275
 DUP
 GETGLOB 9
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -3280,18 +3461,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 INDEX 4
@@ -3300,8 +3492,8 @@ SUB
 UFITS 128
 SETINDEX 4
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -3311,14 +3503,23 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
 DUP
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 282
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 276
 PUXC S3, S-1
 DUP2
 PUSHINT 267
@@ -3333,18 +3534,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 INDEX 3
@@ -3353,8 +3565,8 @@ ADD
 UFITS 128
 SETINDEX 3
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -3364,16 +3576,25 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 283
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 277
 THIRD
 OVER
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -3387,18 +3608,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 THIRD
@@ -3407,8 +3639,8 @@ ADD
 UFITS 128
 SETINDEX 2
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -3418,15 +3650,24 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 284
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 278
 PUSH2 S0, S1
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -3517,10 +3758,10 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 285
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 279
 DUP
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -3534,18 +3775,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 INDEX 5
@@ -3553,8 +3805,8 @@ INC
 UFITS 32
 SETINDEX 5
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -3564,13 +3816,22 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 287
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 281
 PUSHSLICE xc0000000000000000000000000552e14f3
 NEWC
 STSLICE
@@ -3590,7 +3851,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 290
+.loc ../contracts/Dao.tsol, 284
 LDU 32
 LDREF
 ENDS
@@ -3605,7 +3866,7 @@ CALLREF {
 THROW 0
 
 .macro addComment_da1a4f50_internal_macro
-.loc ../contracts/Dao.tsol, 291
+.loc ../contracts/Dao.tsol, 285
 GETGLOB 9
 GETGLOB 16
 PUSHINT 267
@@ -3618,11 +3879,11 @@ IF
 TRUE
 EQUAL
 THROWIFNOT 102
-.loc ../contracts/Dao.tsol, 292
+.loc ../contracts/Dao.tsol, 286
 ACCEPT
-.loc ../contracts/Dao.tsol, 294
+.loc ../contracts/Dao.tsol, 288
 OVER
-GETGLOB 22
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -3679,7 +3940,7 @@ PUSHCONT {
 	TUPLE 11
 }
 IFELSE
-.loc ../contracts/Dao.tsol, 295
+.loc ../contracts/Dao.tsol, 289
 NOW
 OVER
 FIRST
@@ -3690,17 +3951,17 @@ SECOND
 LESS
 AND
 THROWIFNOT 151
-.loc ../contracts/Dao.tsol, 296
+.loc ../contracts/Dao.tsol, 290
 INDEX 10
 THROWIF 152
-.loc ../contracts/Dao.tsol, 298
+.loc ../contracts/Dao.tsol, 292
 GETGLOB 14
 INC
 UFITS 128
 DUP
 SETGLOB 14
-.loc ../contracts/Dao.tsol, 299
-GETGLOB 21
+.loc ../contracts/Dao.tsol, 293
+GETGLOB 20
 DUP2
 PUSHPOW2 7
 DICTUGET
@@ -3735,8 +3996,8 @@ ROTREV
 PUSHPOW2 7
 DICTUSETB
 DUP
-SETGLOB 21
-.loc ../contracts/Dao.tsol, 300
+SETGLOB 20
+.loc ../contracts/Dao.tsol, 294
 GETGLOB 14
 TUCK
 OVER
@@ -3773,8 +4034,8 @@ ROTREV
 PUSHPOW2 7
 DICTUSETB
 DUP
-SETGLOB 21
-.loc ../contracts/Dao.tsol, 301
+SETGLOB 20
+.loc ../contracts/Dao.tsol, 295
 GETGLOB 14
 TUCK
 OVER
@@ -3810,10 +4071,10 @@ CALLREF {
 ROTREV
 PUSHPOW2 7
 DICTUSETB
-SETGLOB 21
-.loc ../contracts/Dao.tsol, 303
+SETGLOB 20
+.loc ../contracts/Dao.tsol, 297
 DUP
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -3916,8 +4177,8 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 305
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 299
 GETGLOB 14
 GETGLOB 9
 ROT
@@ -3941,7 +4202,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 308
+.loc ../contracts/Dao.tsol, 302
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -3955,9 +4216,9 @@ CALLREF {
 THROW 0
 
 .macro cancelTask_08bdfe67_internal_macro
-.loc ../contracts/Dao.tsol, 309
+.loc ../contracts/Dao.tsol, 303
 DUP
-GETGLOB 22
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -4014,13 +4275,13 @@ PUSHCONT {
 	TUPLE 11
 }
 IFELSE
-.loc ../contracts/Dao.tsol, 310
+.loc ../contracts/Dao.tsol, 304
 DUP
 INDEX 4
 GETGLOB 9
 SDEQ
 THROWIFNOT 154
-.loc ../contracts/Dao.tsol, 311
+.loc ../contracts/Dao.tsol, 305
 DUP
 INDEX 10
 EQINT 0
@@ -4029,9 +4290,9 @@ INDEX 10
 EQINT 1
 OR
 THROWIFNOT 152
-.loc ../contracts/Dao.tsol, 313
+.loc ../contracts/Dao.tsol, 307
 OVER
-GETGLOB 22
+GETGLOB 21
 DUP2
 PUSHINT 32
 DICTUGETREF
@@ -4122,10 +4383,10 @@ ENDC
 ROTREV
 PUSHINT 32
 DICTUSETREF
-SETGLOB 22
-.loc ../contracts/Dao.tsol, 315
+SETGLOB 21
+.loc ../contracts/Dao.tsol, 309
 INDEX 3
-.loc ../contracts/Dao.tsol, 317
+.loc ../contracts/Dao.tsol, 311
 DUP
 GETGLOB 9
 NEWC
@@ -4138,9 +4399,9 @@ STZEROES
 ENDC
 PUSHPOW2 7
 SENDRAWMSG
-.loc ../contracts/Dao.tsol, 318
+.loc ../contracts/Dao.tsol, 312
 GETGLOB 9
-GETGLOB 19
+GETGLOB 17
 DUP2
 PUSHINT 267
 DICTGET
@@ -4154,18 +4415,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 DUP
 INDEX 4
@@ -4174,8 +4446,8 @@ SUB
 UFITS 128
 SETINDEX 4
 CALLREF {
-	UNTUPLE 9
-	REVERSE 9, 0
+	UNTUPLE 10
+	REVERSE 10, 0
 	NEWC
 	STU 64
 	STREF
@@ -4185,13 +4457,22 @@ CALLREF {
 	STU 32
 	STU 32
 	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
 	STDICT
 }
 ROTREV
 PUSHINT 267
 DICTSETB
-SETGLOB 19
-.loc ../contracts/Dao.tsol, 320
+SETGLOB 17
+.loc ../contracts/Dao.tsol, 314
 PUSHSLICE xc0000000000000000000000000651e13eb
 NEWC
 STSLICE
@@ -4210,7 +4491,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 323
+.loc ../contracts/Dao.tsol, 317
 OVER
 PUSHCONT {
 	LDREF
@@ -4239,10 +4520,10 @@ PUSHCONT {
 	STUR 98
 	SWAP
 	NEWC
-	STSLICECONST xf1f2abfb
+	STSLICECONST xa56a4870
 	SWAP
-	UNTUPLE 9
-	REVERSE 10, 0
+	UNTUPLE 10
+	REVERSE 11, 0
 	STU 64
 	STREF
 	STU 128
@@ -4250,6 +4531,15 @@ PUSHCONT {
 	STU 128
 	STU 32
 	STU 32
+	STU 32
+	SWAP
+	UNPAIR
+	XCHG S2
+	STU 32
+	STDICT
+	SWAP
+	UNPAIR
+	XCHG S2
 	STU 32
 	STDICT
 	STBREFR
@@ -4267,8 +4557,8 @@ IFREF {
 THROW 0
 
 .macro getMember_2ada2596_internal_macro
-.loc ../contracts/Dao.tsol, 325
-GETGLOB 19
+.loc ../contracts/Dao.tsol, 319
+GETGLOB 17
 PUSHINT 267
 DICTGET
 IFREFELSEREF
@@ -4281,18 +4571,29 @@ IFREFELSEREF
 	LDU 32
 	LDU 32
 	LDU 32
+	LDU 32
 	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
 	ENDS
-	TUPLE 9
+	TUPLE 10
 }
 {
 	PUSHINT 0
 	PUSHREF {
 	}
 	PUSHINT 0
-	BLKPUSH 5, 0
+	BLKPUSH 6, 0
 	NEWDICT
-	TUPLE 9
+	PAIR
+	DUP
+	TUPLE 10
 }
 .loc ../contracts/Dao.tsol, 0
 
@@ -4305,7 +4606,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 328
+.loc ../contracts/Dao.tsol, 322
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -4368,8 +4669,8 @@ IFREF {
 THROW 0
 
 .macro getTask_57342d74_internal_macro
-.loc ../contracts/Dao.tsol, 329
-GETGLOB 22
+.loc ../contracts/Dao.tsol, 323
+GETGLOB 21
 PUSHINT 32
 DICTUGETREF
 PUSHCONT {
@@ -4437,7 +4738,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 332
+.loc ../contracts/Dao.tsol, 326
 OVER
 PUSHCONT {
 	LDREF
@@ -4484,9 +4785,9 @@ IFREF {
 THROW 0
 
 .macro getAssigneeToTask_d257a1a3_internal_macro
-.loc ../contracts/Dao.tsol, 333
+.loc ../contracts/Dao.tsol, 327
 SWAP
-GETGLOB 20
+GETGLOB 19
 PUSHINT 267
 DICTGET
 PUSHCONT {
@@ -4525,7 +4826,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 336
+.loc ../contracts/Dao.tsol, 330
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -4570,8 +4871,8 @@ IFREF {
 THROW 0
 
 .macro getProposal_114f00ab_internal_macro
-.loc ../contracts/Dao.tsol, 337
-GETGLOB 23
+.loc ../contracts/Dao.tsol, 331
+GETGLOB 22
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -4604,7 +4905,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Dao.tsol, 340
+.loc ../contracts/Dao.tsol, 334
 LDU 32
 ENDS
 .loc ../contracts/Dao.tsol, 0
@@ -4647,8 +4948,8 @@ IFREF {
 THROW 0
 
 .macro getVote_ca0652bf_internal_macro
-.loc ../contracts/Dao.tsol, 341
-GETGLOB 24
+.loc ../contracts/Dao.tsol, 335
+GETGLOB 23
 PUSHINT 32
 DICTUGET
 IFREFELSEREF
@@ -4689,17 +4990,6 @@ ENDS
 CTOS
 LDU 256
 LDDICT
-LDU 32
-LDDICT
-ROTREV
-PAIR
-SWAP
-LDU 32
-LDDICT
-LDREF
-ENDS
-CTOS
-LDDICT
 LDDICT
 LDDICT
 LDREF
@@ -4708,22 +4998,28 @@ CTOS
 LDDICT
 LDDICT
 LDDICT
+LDREF
 ENDS
-PUSHINT 0
-GETGLOBVAR
-GETGLOB 1
-GETGLOB 2
-GETGLOB 3
-GETGLOB 4
-GETGLOB 5
-GETGLOB 6
-GETGLOB 7
-GETGLOB 8
-GETGLOB 9
-BLKSWAP 16, 10
-PUSHINT 26
-TUPLEVAR
-POP C7
+CTOS
+LDDICT
+LDDICT
+LDDICT
+ENDS
+SETGLOB 24
+SETGLOB 23
+SETGLOB 22
+SETGLOB 21
+SETGLOB 20
+SETGLOB 19
+SETGLOB 18
+SETGLOB 17
+SETGLOB 16
+SETGLOB 15
+SETGLOB 14
+SETGLOB 13
+SETGLOB 12
+SETGLOB 11
+SETGLOB 10
 SETGLOB 3
 SETGLOB 2
 
@@ -4737,19 +5033,8 @@ PUSHCONT {
 	PUSHROOT
 	CTOS
 	PLDDICT ; D
-	PUSHINT 0
-	GETGLOBVAR
-	GETGLOB 1
-	GETGLOB 2
-	GETGLOB 3
-	GETGLOB 4
-	GETGLOB 5
-	GETGLOB 6
-	GETGLOB 7
-	GETGLOB 8
-	GETGLOB 9
 	PUSHINT 1
-	PUSH S11
+	OVER
 	PUSHINT 64
 	DICTUGET
 	ZEROSWAPIFNOT
@@ -4760,15 +5045,22 @@ PUSHCONT {
 	PUSHINT 0
 	BLKPUSH 4, 0
 	NEWDICT
-	PUSHINT 0
-	NEWDICT
-	PAIR
-	PUSHINT 0
-	NEWDICT
-	BLKPUSH 6, 0
-	PUSHINT 26
-	TUPLEVAR
-	POP C7
+	BLKPUSH 8, 0
+	SETGLOB 24
+	SETGLOB 23
+	SETGLOB 22
+	SETGLOB 21
+	SETGLOB 20
+	SETGLOB 19
+	SETGLOB 18
+	SETGLOB 17
+	SETGLOB 16
+	SETGLOB 15
+	SETGLOB 14
+	SETGLOB 13
+	SETGLOB 12
+	SETGLOB 11
+	SETGLOB 10
 	PUSHINT 64
 	DICTUGET
 	THROWIFNOT 61
@@ -4782,17 +5074,21 @@ IFREFELSE {
 }
 
 .macro c7_to_c4
-PUSH C7
-FALSE
-PUSHINT 26
-SETINDEXVARQ
-PUSHINT 27
-UNTUPLEVAR
-DROP
-PUSHINT 26
-PUSHINT 0
-REVX
-BLKDROP 10
+GETGLOB 24
+GETGLOB 23
+GETGLOB 22
+GETGLOB 21
+GETGLOB 20
+GETGLOB 19
+GETGLOB 18
+GETGLOB 17
+GETGLOB 16
+GETGLOB 15
+GETGLOB 14
+GETGLOB 13
+GETGLOB 12
+GETGLOB 11
+GETGLOB 10
 GETGLOB 3
 GETGLOB 2
 NEWC
@@ -4804,16 +5100,11 @@ STU 32
 STU 32
 STU 64
 STU 128
-ROLLREV 11
+ROLLREV 10
 NEWC
 STU 256
 STDICT
-SWAP
-UNPAIR
-XCHG S2
-STU 32
 STDICT
-STU 32
 STDICT
 ROLLREV 6
 NEWC
@@ -4940,9 +5231,89 @@ CALLREF {
 }
 THROW 60
 
+.macro _numOfProposals
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 11
+OVER
+PUSHCONT {
+	PUSHSLICE xc00000000000000000000000009ca83542
+	NEWC
+	STSLICE
+	STU 32
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro _numOfTasks
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 12
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000ecc4309c
+	NEWC
+	STSLICE
+	STU 32
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro _memberUID
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 13
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000cf6f80e2
+	NEWC
+	STSLICE
+	STU 64
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro _numOfComments
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 14
+OVER
+PUSHCONT {
+	PUSHSLICE xc00000000000000000000000009c4d2d65
+	NEWC
+	STSLICE
+	STU 128
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
 .macro public_function_selector
 DUP
-PUSHINT 1658380126
+PUSHINT 1420157984
 LEQ
 IFJMPREF {
 	DUP
@@ -4975,14 +5346,20 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 587384349
+	PUSHINT 573219830
 	LEQ
 	IFJMPREF {
 		DUP
-		PUSHINT 512484248
+		PUSHINT 474819941
 		EQUAL
 		IFJMPREF {
-			CALL $addMember$
+			CALL $_numOfComments$
+		}
+		DUP
+		PUSHINT 480785730
+		EQUAL
+		IFJMPREF {
+			CALL $_numOfProposals$
 		}
 		DUP
 		PUSHINT 512882072
@@ -4996,17 +5373,23 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getAssigneeToTask$
 		}
+	}
+	DUP
+	PUSHINT 925926779
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 587384349
 		EQUAL
 		IFJMPREF {
 			CALL $claimTask$
 		}
-	}
-	DUP
-	PUSHINT 1188146456
-	LEQ
-	IFJMPREF {
+		DUP
+		PUSHINT 627722352
+		EQUAL
+		IFJMPREF {
+			CALL $getMember$
+		}
 		DUP
 		PUSHINT 771861522
 		EQUAL
@@ -5019,6 +5402,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $finishReview$
 		}
+	}
+	DUP
+	PUSHINT 1420157984
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1094266125
 		EQUAL
@@ -5031,16 +5419,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $cancelTask$
 		}
-	}
-	DUP
-	PUSHINT 1658380126
-	LEQ
-	IFJMPREF {
 		DUP
-		PUSHINT 1360653736
+		PUSHINT 1332707554
 		EQUAL
 		IFJMPREF {
-			CALL $setValue$
+			CALL $_memberUID$
 		}
 		DUP
 		PUSHINT 1420157984
@@ -5048,6 +5431,16 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getVote$
 		}
+	}
+}
+DUP
+PUSHINT 2047527191
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1836087918
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1553428671
 		EQUAL
@@ -5060,35 +5453,35 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getProposal$
 		}
-	}
-}
-DUP
-PUSHINT 2047527191
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1836087918
-	EQUAL
-	IFJMPREF {
-		CALL $getTask$
-	}
-	DUP
-	PUSHINT 1911729147
-	EQUAL
-	IFJMPREF {
-		CALL $getMember$
-	}
-	DUP
-	PUSHINT 1921150627
-	EQUAL
-	IFJMPREF {
-		CALL $joinDao$
+		DUP
+		PUSHINT 1824796828
+		EQUAL
+		IFJMPREF {
+			CALL $_numOfTasks$
+		}
+		DUP
+		PUSHINT 1836087918
+		EQUAL
+		IFJMPREF {
+			CALL $getTask$
+		}
 	}
 	DUP
 	PUSHINT 2047527191
-	EQUAL
+	LEQ
 	IFJMPREF {
-		CALL $finalizeVote$
+		DUP
+		PUSHINT 1921150627
+		EQUAL
+		IFJMPREF {
+			CALL $joinDao$
+		}
+		DUP
+		PUSHINT 2047527191
+		EQUAL
+		IFJMPREF {
+			CALL $finalizeVote$
+		}
 	}
 }
 

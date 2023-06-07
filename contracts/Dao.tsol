@@ -7,15 +7,13 @@ pragma AbiHeader pubkey;
 
 contract Dao {
     uint256 static _nonce;
-    uint32 _numOfProposals;
-    uint32 _numOfTasks;
-    uint64 _memberUID;
-    uint128 _numOfComments;
+    uint32 public _numOfProposals;
+    uint32 public _numOfTasks;
+    uint64 public _memberUID;
+    uint128 public _numOfComments;
     uint256 _managerPublicKey;
 
     mapping(address => bool) memberExists;
-    uint32[] _map1;
-    uint32 _value;
 
     event MemberAdded(address member);
     event TaskCreated(address owner,uint32 TaskId);
@@ -38,10 +36,12 @@ contract Dao {
         uint32 acceptedTasks;
         uint32 appliedTasks;
         uint32 accumulatedVotes;
-        mapping(uint32 => bool) isTaskClaimed;
+        uint32[] createdTasks;
+        uint32[] createdProposals; 
     }
 
     mapping(address => Member) members;
+    mapping(address => mapping(uint32 => bool)) isTaskClaimed;
 
     enum VoteStatus {
         NotAvailable,
@@ -137,17 +137,6 @@ contract Dao {
         emit MemberAdded(msg.sender);
     }
 
-    function setValue(uint32 val) public {
-        _value = val;
-    }
-
-    function addMember(uint32 key) public {
-        tvm.accept();
-        //memberExists.add(msg.sender,true);
-        _map1.push(key);
-        emit MemberAdded(msg.sender);
-    }
-
     function isMember(address person) external view returns (bool exists) {
         return memberExists[person];
     }
@@ -169,13 +158,14 @@ contract Dao {
         tasks[_numOfTasks].status = TaskStatus.InProgress;
 
         members[msg.sender].assigned += bounty;
+        members[msg.sender].createdTasks.push(_numOfTasks);
 
         emit TaskCreated(msg.sender,_numOfTasks);
     }
 
     function claimTask(uint32 taskID) external {
         require(memberExists[msg.sender] == true,102);
-        require(members[msg.sender].isTaskClaimed[taskID] == false,158);
+        require(isTaskClaimed[msg.sender][taskID] == false,158);
         // add rawreserve. Pay it back later
         //tvm.accept();
 
@@ -186,7 +176,7 @@ contract Dao {
         tasks[taskID].assignees.push(msg.sender);
         assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Claimed;
         members[msg.sender].appliedTasks += 1;
-        members[msg.sender].isTaskClaimed[taskID] = true;
+        isTaskClaimed[msg.sender][taskID] = true;
 
         emit TaskClaimed(msg.sender,taskID);
     }
@@ -220,6 +210,8 @@ contract Dao {
         votes[_numOfProposals].endTime = now + duration;
         votes[_numOfProposals].status = VoteStatus.InProgress;
 
+        members[msg.sender].createdProposals.push(_numOfProposals);
+
         emit ProposalCreated(msg.sender,_numOfProposals);
     }
 
@@ -238,6 +230,8 @@ contract Dao {
         }
 
         memberVote[msg.sender][proposalID] = true;
+
+        members[msg.sender].accumulatedVotes += 1;
 
         emit MemberVoted(msg.sender,proposalID);
     }

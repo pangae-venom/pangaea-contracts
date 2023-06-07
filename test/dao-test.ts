@@ -173,6 +173,9 @@ describe("Test Dao contract", async function () {
 
       const res2 = await dao.methods.getVote({proposalID: 1}).call();
       expect(Number(res2.value0.status)).to.be.equal(1, "Wrong value");
+
+      const res3 = await dao.methods.getMember({member: account1.address}).call();
+      expect(Number(res3.value0.createdProposals.length)).to.be.equal(1, "Wrong value");
     });
 
     it("votes on a proposal", async function() {
@@ -190,6 +193,20 @@ describe("Test Dao contract", async function () {
       const res3 = await dao.methods.getVote({proposalID: 1}).call();
       expect(Number(res3.value0.status)).to.be.equal(2, "Wrong value");
 
+    })
+
+    it("fetches contract state", async function() {
+      const res = await dao.methods._memberUID({} as never).call();
+      expect(Number(res._memberUID)).to.be.equal(2, "Wrong value");
+
+      const res2 = await dao.methods._numOfTasks({} as never).call();
+      expect(Number(res2._numOfTasks)).to.be.equal(3, "Wrong value");
+
+      const res3 = await dao.methods._numOfProposals({} as never).call();
+      expect(Number(res3._numOfProposals)).to.be.equal(1, "Wrong value");
+
+      const res4 = await dao.methods._numOfComments({} as never).call();
+      expect(Number(res4._numOfComments)).to.be.equal(0, "Wrong value");
     })
 
   });

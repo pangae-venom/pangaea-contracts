@@ -57,9 +57,9 @@ contract Dao {
     struct Vote {
         uint32 startTime;
         uint32 endTime;
-        uint32 yes;
-        uint32 no;
-        uint32 abstain;
+        uint128 yes;
+        uint128 no;
+        uint128 abstain;
         address[] locks;
         address[] singles;
         VoteStatus status;
@@ -275,11 +275,11 @@ contract Dao {
         require(bval,DaoErrors.not_enough_value_attached);
 
         if (val == 1) {
-            votes[proposalID].yes +=1;
+            votes[proposalID].yes += power;
         } else if (val == 2) {
-            votes[proposalID].no +=1;
+            votes[proposalID].no += power;
         } else {
-            votes[proposalID].abstain +=1;
+            votes[proposalID].abstain += power;
         }
 
         memberVote[msg.sender][proposalID] = true;

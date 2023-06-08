@@ -170,7 +170,7 @@
 				{"name":"proposalID","type":"uint32"}
 			],
 			"outputs": [
-				{"components":[{"name":"startTime","type":"uint32"},{"name":"endTime","type":"uint32"},{"name":"yes","type":"uint32"},{"name":"no","type":"uint32"},{"name":"abstain","type":"uint32"},{"name":"locks","type":"address[]"},{"name":"singles","type":"address[]"},{"name":"status","type":"uint8"}],"name":"value0","type":"tuple"}
+				{"components":[{"name":"startTime","type":"uint32"},{"name":"endTime","type":"uint32"},{"name":"yes","type":"uint128"},{"name":"no","type":"uint128"},{"name":"abstain","type":"uint128"},{"name":"locks","type":"address[]"},{"name":"singles","type":"address[]"},{"name":"status","type":"uint8"}],"name":"value0","type":"tuple"}
 			]
 		},
 		{
@@ -354,7 +354,7 @@
 		{"components":[{"name":"postTime","type":"uint32"},{"name":"commenter","type":"address"},{"name":"comment","type":"string"}],"name":"comments","type":"map(uint128,tuple)"},
 		{"components":[{"name":"startTime","type":"uint32"},{"name":"endTime","type":"uint32"},{"name":"points","type":"uint32"},{"name":"bounty","type":"uint128"},{"name":"owner","type":"address"},{"name":"assignees","type":"address[]"},{"name":"winner","type":"address"},{"name":"comments","type":"uint128[]"},{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"status","type":"uint8"}],"name":"tasks","type":"map(uint32,tuple)"},
 		{"components":[{"name":"creator","type":"address"},{"name":"createdTime","type":"uint32"},{"name":"title","type":"string"},{"name":"description","type":"string"}],"name":"proposals","type":"map(uint32,tuple)"},
-		{"components":[{"name":"startTime","type":"uint32"},{"name":"endTime","type":"uint32"},{"name":"yes","type":"uint32"},{"name":"no","type":"uint32"},{"name":"abstain","type":"uint32"},{"name":"locks","type":"address[]"},{"name":"singles","type":"address[]"},{"name":"status","type":"uint8"}],"name":"votes","type":"map(uint32,tuple)"},
+		{"components":[{"name":"startTime","type":"uint32"},{"name":"endTime","type":"uint32"},{"name":"yes","type":"uint128"},{"name":"no","type":"uint128"},{"name":"abstain","type":"uint128"},{"name":"locks","type":"address[]"},{"name":"singles","type":"address[]"},{"name":"status","type":"uint8"}],"name":"votes","type":"map(uint32,tuple)"},
 		{"name":"memberVote","type":"map(address,map(uint32,bool))"}
 	]
 }

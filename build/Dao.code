@@ -6998,6 +6998,82 @@ PUSHCONT {
 IF
 .loc ../contracts/Dao.tsol, 0
 
+.macro getVoteLock
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/Dao.tsol, 410
+OVER
+PUSHCONT {
+	LDU 32
+	LDREF
+	ENDS
+	CTOS
+}
+PUSHCONT {
+	LDU 32
+}
+IFELSE
+LDMSGADDR
+ENDS
+.loc ../contracts/Dao.tsol, 0
+CALLREF {
+	CALL $getVoteLock_28e01f1b_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 3707211025
+	STUR 130
+	STU 128
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.macro getVoteLock_28e01f1b_internal_macro
+.loc ../contracts/Dao.tsol, 411
+SWAP
+GETGLOB 19
+PUSHINT 32
+DICTUGET
+PUSHCONT {
+	PLDDICT
+}
+PUSHCONT {
+	NEWDICT
+}
+IFELSE
+PUSHINT 267
+DICTGET
+ZEROSWAPIFNOT
+PUSHCONT {
+	PLDU 128
+}
+IF
+.loc ../contracts/Dao.tsol, 0
+
 .macro c4_to_c7
 PUSHROOT
 CTOS
@@ -7499,9 +7575,15 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 1921150627
+	PUSHINT 1836087918
 	LEQ
 	IFJMPREF {
+		DUP
+		PUSHINT 1559727377
+		EQUAL
+		IFJMPREF {
+			CALL $getVoteLock$
+		}
 		DUP
 		PUSHINT 1658380126
 		EQUAL
@@ -7520,18 +7602,23 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getTask$
 		}
+	}
+	DUP
+	PUSHINT 2047527191
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1921150627
 		EQUAL
 		IFJMPREF {
 			CALL $joinDao$
 		}
-	}
-	DUP
-	PUSHINT 2047527191
-	EQUAL
-	IFJMPREF {
-		CALL $finalizeVote$
+		DUP
+		PUSHINT 2047527191
+		EQUAL
+		IFJMPREF {
+			CALL $finalizeVote$
+		}
 	}
 }
 

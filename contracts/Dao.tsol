@@ -4,6 +4,8 @@ pragma AbiHeader expire;
 pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
+import "./errors/DaoErrors.tsol";
+
 
 contract Dao {
     uint256 static _nonce;
@@ -34,8 +36,8 @@ contract Dao {
         uint128 earned;
         uint128 assigned;
         uint32 acceptedTasks;
-        uint32 appliedTasks;
         uint32 accumulatedVotes;
+        uint32[] appliedTasks;
         uint32[] createdTasks;
         uint32[] createdProposals; 
     }
@@ -126,7 +128,7 @@ contract Dao {
     }
 
     function joinDao(string name) external {
-        require(memberExists[msg.sender] == false, 101);
+        require(memberExists[msg.sender] == false, DaoErrors.member_already_exists);
         tvm.rawReserve(1 ever, 0);
 
         _memberUID++;
@@ -164,18 +166,18 @@ contract Dao {
     }
 
     function claimTask(uint32 taskID) external {
-        require(memberExists[msg.sender] == true,102);
-        require(isTaskClaimed[msg.sender][taskID] == false,158);
+        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
+        require(isTaskClaimed[msg.sender][taskID] == false,DaoErrors.task_already_claimed_by_member);
         // add rawreserve. Pay it back later
         //tvm.accept();
 
         Task temp = tasks[taskID];
-        require(now >= temp.startTime && now < temp.endTime,151);
-        require(temp.status == TaskStatus.InProgress,152);
+        require(now >= temp.startTime && now < temp.endTime,DaoErrors.task_expired);
+        require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
 
         tasks[taskID].assignees.push(msg.sender);
         assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Claimed;
-        members[msg.sender].appliedTasks += 1;
+        members[msg.sender].appliedTasks.push(taskID);
         isTaskClaimed[msg.sender][taskID] = true;
 
         emit TaskClaimed(msg.sender,taskID);
@@ -183,13 +185,13 @@ contract Dao {
 
     function submitTask(uint32 taskID,string submission) external {
 
-        require(memberExists[msg.sender] == true,102);
+        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
         tvm.accept();
 
         Task temp = tasks[taskID];
-        require(now >= temp.startTime && now < temp.endTime,151);
-        require(temp.status == TaskStatus.InProgress,152);
-        require(assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Claimed,153);
+        require(now >= temp.startTime && now < temp.endTime,DaoErrors.task_expired);
+        require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
+        require(assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Claimed,DaoErrors.task_not_claimed);
 
         assigneeToTask[msg.sender][taskID].submission = submission;
         assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Submitted;
@@ -198,7 +200,7 @@ contract Dao {
     }
 
     function createProposal(string title, string description, uint32 duration) external {
-        require(memberExists[msg.sender] == true,102);
+        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
 
         _numOfProposals++;
         proposals[_numOfProposals].title = title;
@@ -216,10 +218,10 @@ contract Dao {
     }
 
     function castVote(uint32 proposalID,uint8 val) external {
-        require(memberExists[msg.sender] == true,102);
-        require(memberVote[msg.sender][proposalID] == false, 171);
-        require(val <= 2,181);
-        require(votes[proposalID].endTime >= now && votes[proposalID].status == VoteStatus.InProgress, 182);
+        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
+        require(memberVote[msg.sender][proposalID] == false, DaoErrors.member_has_already_voted);
+        require(val <= 2,DaoErrors.only_three_choices_allowed);
+        require(votes[proposalID].endTime >= now && votes[proposalID].status == VoteStatus.InProgress, DaoErrors.proposal_not_active);
 
         if (val == 0) {
             votes[proposalID].yes +=1;
@@ -237,8 +239,8 @@ contract Dao {
     }
 
     function finalizeVote(uint32 proposalID) external {
-        require(memberExists[msg.sender] == true,102);
-        require(votes[proposalID].endTime < now && votes[proposalID].status == VoteStatus.InProgress, 182);
+        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
+        require(votes[proposalID].endTime < now && votes[proposalID].status == VoteStatus.InProgress, DaoErrors.proposal_still_active);
 
         tvm.accept();
 
@@ -253,9 +255,9 @@ contract Dao {
 
     function startReview(uint32 taskID) external {
         Task temp = tasks[taskID];
-        require(temp.owner == msg.sender,154);
-        require(now > temp.endTime,155);
-        require(temp.status == TaskStatus.InProgress,152);
+        require(temp.owner == msg.sender,DaoErrors.not_the_owner);
+        require(now > temp.endTime,DaoErrors.time_not_expired);
+        require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
 
         tasks[taskID].status = TaskStatus.UnderReview;
 
@@ -264,8 +266,8 @@ contract Dao {
 
     function finishReview(uint32 taskID,address winner) external {
         Task temp = tasks[taskID];
-        require(temp.owner == msg.sender,154);
-        require(temp.status == TaskStatus.UnderReview,152);
+        require(temp.owner == msg.sender,DaoErrors.not_the_owner);
+        require(temp.status == TaskStatus.UnderReview,DaoErrors.task_not_in_progress);
 
         tasks[taskID].status = TaskStatus.Accepted;
 
@@ -282,12 +284,12 @@ contract Dao {
     }
 
     function addComment(uint32 taskID, string message) external {
-        require(memberExists[msg.sender] == true,102);
+        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
         tvm.accept();
 
         Task temp = tasks[taskID];
-        require(now >= temp.startTime && now < temp.endTime,151);
-        require(temp.status == TaskStatus.InProgress,152);
+        require(now >= temp.startTime && now < temp.endTime,DaoErrors.task_expired);
+        require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
 
         _numOfComments++;
         comments[_numOfComments].postTime = now;
@@ -301,8 +303,8 @@ contract Dao {
 
     function cancelTask(uint32 taskID) external {
         Task temp = tasks[taskID];
-        require(temp.owner == msg.sender,154);
-        require(temp.status == TaskStatus.InProgress || temp.status == TaskStatus.UnderReview,152);
+        require(temp.owner == msg.sender,DaoErrors.not_the_owner);
+        require(temp.status == TaskStatus.InProgress || temp.status == TaskStatus.UnderReview,DaoErrors.task_not_active);
 
         tasks[taskID].status = TaskStatus.Rejected;
 
@@ -333,6 +335,10 @@ contract Dao {
 
     function getVote(uint32 proposalID) external view returns (Vote) {
         return votes[proposalID];
+    }
+
+    function getComment(uint128 commentID) external view returns (Comment) {
+        return comments[commentID];
     }
 
 }

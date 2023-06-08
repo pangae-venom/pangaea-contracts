@@ -136,6 +136,11 @@ describe("Test Dao contract", async function () {
       const res3 = await dao.methods.getTask({taskID: 3}).call();
       expect(res3.value0.assignees.length).to.be.equal(1,"Wrong value");
 
+      // Get Member struct
+
+      const resm = await dao.methods.getMember({member: account2.address}).call();
+      expect(resm.value0.appliedTasks.length).to.be.equal(1,"Wrong value");
+
       // Member 2 submits task
 
       await locklift.testing.increaseTime(100);

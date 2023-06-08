@@ -1,0 +1,17 @@
+pragma ever-solidity >= 0.61.2;
+
+library DaoErrors {
+    uint8 constant member_already_exists = 101;
+    uint8 constant member_does_not_exist = 102;
+    uint8 constant task_already_claimed_by_member = 158;
+    uint8 constant task_expired = 151;
+    uint8 constant task_not_in_progress = 152;
+    uint8 constant task_not_active = 156;
+    uint8 constant task_not_claimed = 153;
+    uint8 constant member_has_already_voted = 171;
+    uint8 constant only_three_choices_allowed = 181;
+    uint8 constant proposal_not_active = 182;
+    uint8 constant proposal_still_active = 183;
+    uint8 constant not_the_owner = 154;
+    uint8 constant time_not_expired = 155;
+}

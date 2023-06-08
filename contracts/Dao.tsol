@@ -407,4 +407,8 @@ contract Dao {
         return voteCast[proposalID][voter];
     }
 
+    function getVoteLock(uint32 proposalID,address voter) external view returns (uint128) {
+        return voteLocks[proposalID][voter];
+    }
+
 }

@@ -15,4 +15,5 @@ library DaoErrors {
     uint8 constant not_the_owner = 154;
     uint8 constant time_not_expired = 155;
     uint8 constant no_bounty_due = 191;
+    uint8 constant not_enough_value_attached = 192;
 }

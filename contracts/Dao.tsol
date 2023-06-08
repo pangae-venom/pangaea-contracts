@@ -262,6 +262,7 @@ contract Dao {
         require(memberVote[msg.sender][proposalID] == false, DaoErrors.member_has_already_voted);
         require(val > 0 && val <= 3,DaoErrors.only_three_choices_allowed);
         require(votes[proposalID].endTime >= now && votes[proposalID].status == VoteStatus.InProgress, DaoErrors.proposal_not_active);
+        require(power >= 2, DaoErrors.only_for_voting_power_more_than_one);
 
         tvm.rawReserve(1 ever, 0);
 
@@ -400,6 +401,10 @@ contract Dao {
 
     function getComment(uint128 commentID) external view returns (Comment) {
         return comments[commentID];
+    }
+
+    function getVoteCast(uint32 proposalID,address voter) external view returns (uint8) {
+        return voteCast[proposalID][voter];
     }
 
 }

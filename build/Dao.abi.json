@@ -183,6 +183,16 @@
 			]
 		},
 		{
+			"name": "getVoteCast",
+			"inputs": [
+				{"name":"proposalID","type":"uint32"},
+				{"name":"voter","type":"address"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint8"}
+			]
+		},
+		{
 			"name": "_numOfProposals",
 			"inputs": [
 			],

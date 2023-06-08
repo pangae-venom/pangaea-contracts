@@ -16,4 +16,5 @@ library DaoErrors {
     uint8 constant time_not_expired = 155;
     uint8 constant no_bounty_due = 191;
     uint8 constant not_enough_value_attached = 192;
+    uint8 constant only_for_voting_power_more_than_one = 193;
 }

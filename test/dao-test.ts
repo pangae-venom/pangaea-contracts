@@ -149,7 +149,8 @@ describe("Test Dao contract", async function () {
       await dao.methods.submitTask({taskID: 3,submission: submission}).send({from:account2.address,amount:locklift.utils.toNano(1)});
 
       const aTT = await dao.methods.getAssigneeToTask({assignee:account2.address,taskID: 3}).call();
-      expect(Number(aTT.value0.status)).to.be.equal(1,"Wrong Value");
+      expect(Number(aTT.value0.status)).to.be.equal(2,"Wrong Value");
+      
 
       // Member 1 starts review after the time is up
       await locklift.testing.increaseTime(4000);
@@ -211,7 +212,7 @@ describe("Test Dao contract", async function () {
       expect(Number(res3._numOfProposals)).to.be.equal(1, "Wrong value");
 
       const res4 = await dao.methods._numOfComments({} as never).call();
-      expect(Number(res4._numOfComments)).to.be.equal(0, "Wrong value");
+      expect(Number(res4._numOfComments)).to.be.equal(1, "Wrong value");
     })
 
   });

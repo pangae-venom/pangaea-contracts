@@ -110,15 +110,6 @@
 			]
 		},
 		{
-			"name": "addComment",
-			"inputs": [
-				{"name":"taskID","type":"uint32"},
-				{"name":"message","type":"string"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "cancelTask",
 			"inputs": [
 				{"name":"taskID","type":"uint32"}
@@ -132,7 +123,7 @@
 				{"name":"member","type":"address"}
 			],
 			"outputs": [
-				{"components":[{"name":"uid","type":"uint64"},{"name":"name","type":"string"},{"name":"points","type":"uint128"},{"name":"earned","type":"uint128"},{"name":"totalEarnings","type":"uint128"},{"name":"assigned","type":"uint128"},{"name":"acceptedTasks","type":"uint32"},{"name":"accumulatedVotes","type":"uint32"},{"name":"appliedTasks","type":"uint32[]"},{"name":"createdTasks","type":"uint32[]"},{"name":"createdProposals","type":"uint32[]"}],"name":"value0","type":"tuple"}
+				{"components":[{"name":"uid","type":"uint64"},{"name":"name","type":"string"},{"name":"points","type":"uint128"},{"name":"earned","type":"uint128"},{"name":"totalEarnings","type":"uint128"},{"name":"assigned","type":"uint128"},{"name":"acceptedTasks","type":"uint32"},{"name":"accumulatedVotes","type":"uint32"},{"name":"appliedTasks","type":"uint32[]"},{"name":"submittedTasks","type":"uint32[]"},{"name":"createdTasks","type":"uint32[]"},{"name":"createdProposals","type":"uint32[]"}],"name":"value0","type":"tuple"}
 			]
 		},
 		{
@@ -151,7 +142,7 @@
 				{"name":"taskID","type":"uint32"}
 			],
 			"outputs": [
-				{"components":[{"name":"status","type":"uint8"},{"name":"submission","type":"string"}],"name":"value0","type":"tuple"}
+				{"components":[{"name":"status","type":"uint8"}],"name":"value0","type":"tuple"}
 			]
 		},
 		{
@@ -312,16 +303,6 @@
 			],
 			"outputs": [
 			]
-		},
-		{
-			"name": "CommentPosted",
-			"inputs": [
-				{"name":"TaskId","type":"uint32"},
-				{"name":"member","type":"address"},
-				{"name":"CommentId","type":"uint128"}
-			],
-			"outputs": [
-			]
 		}
 	],
 	"fields": [
@@ -335,9 +316,9 @@
 		{"name":"_numOfComments","type":"uint128"},
 		{"name":"_managerPublicKey","type":"uint256"},
 		{"name":"memberExists","type":"map(address,bool)"},
-		{"components":[{"name":"uid","type":"uint64"},{"name":"name","type":"string"},{"name":"points","type":"uint128"},{"name":"earned","type":"uint128"},{"name":"totalEarnings","type":"uint128"},{"name":"assigned","type":"uint128"},{"name":"acceptedTasks","type":"uint32"},{"name":"accumulatedVotes","type":"uint32"},{"name":"appliedTasks","type":"uint32[]"},{"name":"createdTasks","type":"uint32[]"},{"name":"createdProposals","type":"uint32[]"}],"name":"members","type":"map(address,tuple)"},
+		{"components":[{"name":"uid","type":"uint64"},{"name":"name","type":"string"},{"name":"points","type":"uint128"},{"name":"earned","type":"uint128"},{"name":"totalEarnings","type":"uint128"},{"name":"assigned","type":"uint128"},{"name":"acceptedTasks","type":"uint32"},{"name":"accumulatedVotes","type":"uint32"},{"name":"appliedTasks","type":"uint32[]"},{"name":"submittedTasks","type":"uint32[]"},{"name":"createdTasks","type":"uint32[]"},{"name":"createdProposals","type":"uint32[]"}],"name":"members","type":"map(address,tuple)"},
 		{"name":"isTaskClaimed","type":"map(address,map(uint32,bool))"},
-		{"components":[{"name":"status","type":"uint8"},{"name":"submission","type":"string"}],"name":"assigneeToTask","type":"map(address,map(uint32,tuple))"},
+		{"components":[{"name":"status","type":"uint8"}],"name":"assigneeToTask","type":"map(address,map(uint32,tuple))"},
 		{"components":[{"name":"postTime","type":"uint32"},{"name":"commenter","type":"address"},{"name":"comment","type":"string"}],"name":"comments","type":"map(uint128,tuple)"},
 		{"components":[{"name":"startTime","type":"uint32"},{"name":"endTime","type":"uint32"},{"name":"points","type":"uint32"},{"name":"bounty","type":"uint128"},{"name":"owner","type":"address"},{"name":"assignees","type":"address[]"},{"name":"winner","type":"address"},{"name":"comments","type":"uint128[]"},{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"status","type":"uint8"}],"name":"tasks","type":"map(uint32,tuple)"},
 		{"components":[{"name":"creator","type":"address"},{"name":"createdTime","type":"uint32"},{"name":"title","type":"string"},{"name":"description","type":"string"}],"name":"proposals","type":"map(uint32,tuple)"},

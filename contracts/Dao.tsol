@@ -169,7 +169,7 @@ contract Dao {
         require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
         require(isTaskClaimed[msg.sender][taskID] == false,DaoErrors.task_already_claimed_by_member);
         // add rawreserve. Pay it back later
-        //tvm.accept();
+        tvm.accept();
 
         Task temp = tasks[taskID];
         require(now >= temp.startTime && now < temp.endTime,DaoErrors.task_expired);
@@ -220,6 +220,7 @@ contract Dao {
     function castVote(uint32 proposalID,uint8 val) external {
         require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
         require(memberVote[msg.sender][proposalID] == false, DaoErrors.member_has_already_voted);
+        tvm.accept();
         require(val <= 2,DaoErrors.only_three_choices_allowed);
         require(votes[proposalID].endTime >= now && votes[proposalID].status == VoteStatus.InProgress, DaoErrors.proposal_not_active);
 
@@ -256,6 +257,7 @@ contract Dao {
     function startReview(uint32 taskID) external {
         Task temp = tasks[taskID];
         require(temp.owner == msg.sender,DaoErrors.not_the_owner);
+        tvm.accept();
         require(now > temp.endTime,DaoErrors.time_not_expired);
         require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
 
@@ -267,6 +269,7 @@ contract Dao {
     function finishReview(uint32 taskID,address winner) external {
         Task temp = tasks[taskID];
         require(temp.owner == msg.sender,DaoErrors.not_the_owner);
+        tvm.accept();
         require(temp.status == TaskStatus.UnderReview,DaoErrors.task_not_in_progress);
 
         tasks[taskID].status = TaskStatus.Accepted;
@@ -304,6 +307,7 @@ contract Dao {
     function cancelTask(uint32 taskID) external {
         Task temp = tasks[taskID];
         require(temp.owner == msg.sender,DaoErrors.not_the_owner);
+        tvm.accept();
         require(temp.status == TaskStatus.InProgress || temp.status == TaskStatus.UnderReview,DaoErrors.task_not_active);
 
         tasks[taskID].status = TaskStatus.Rejected;

@@ -61,6 +61,7 @@ contract Dao {
         uint32 no;
         uint32 abstain;
         address[] locks;
+        address[] singles;
         VoteStatus status;
     }
 
@@ -248,6 +249,8 @@ contract Dao {
         memberVote[msg.sender][proposalID] = true;
 
         members[msg.sender].accumulatedVotes += 1;
+
+        votes[proposalID].singles.push(msg.sender);
 
         emit MemberVoted(msg.sender,proposalID);
     }

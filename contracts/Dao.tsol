@@ -28,7 +28,6 @@ contract Dao {
     event ProposalCreated(address owner,uint32 ProposalId);
     event MemberVoted(address member,uint32 ProposalId);
     event VoteFinalized(uint32 ProposalID);
-    event CommentPosted(uint32 TaskId,address member, uint128 CommentId);
 
     struct Member {
         uint64 uid;
@@ -40,6 +39,7 @@ contract Dao {
         uint32 acceptedTasks;
         uint32 accumulatedVotes;
         uint32[] appliedTasks;
+        uint32[] submittedTasks;
         uint32[] createdTasks;
         uint32[] createdProposals; 
     }
@@ -64,15 +64,13 @@ contract Dao {
     }
 
     enum AssigneeStatus {
+        NotAssigned,
         Claimed,
-        Submitted,
-        Cancelled,
-        NotAssigned
+        Submitted
     }
 
     struct TaskAssignee {
         AssigneeStatus status;
-        string submission;
     }
 
     mapping(address => mapping( uint32 => TaskAssignee)) assigneeToTask;
@@ -193,9 +191,19 @@ contract Dao {
         Task temp = tasks[taskID];
         require(now >= temp.startTime && now < temp.endTime,DaoErrors.task_expired);
         require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
-        require(assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Claimed,DaoErrors.task_not_claimed);
+        require(assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Claimed || assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Submitted,DaoErrors.task_not_claimed);
 
-        assigneeToTask[msg.sender][taskID].submission = submission;
+        _numOfComments++;
+        comments[_numOfComments].postTime = now;
+        comments[_numOfComments].commenter = msg.sender;
+        comments[_numOfComments].comment = submission;
+
+        tasks[taskID].comments.push(_numOfComments);
+
+        if (assigneeToTask[msg.sender][taskID].status == AssigneeStatus.Claimed) {
+            members[msg.sender].submittedTasks.push(taskID);
+        }
+
         assigneeToTask[msg.sender][taskID].status = AssigneeStatus.Submitted;
 
         emit TaskSubmitted(msg.sender,taskID);
@@ -299,24 +307,6 @@ contract Dao {
         msg.sender.transfer({ value: bounty, flag: 128, bounce: false});
 
         emit BountyPaid(msg.sender,bounty);
-    }
-
-    function addComment(uint32 taskID, string message) external {
-        require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
-        tvm.accept();
-
-        Task temp = tasks[taskID];
-        require(now >= temp.startTime && now < temp.endTime,DaoErrors.task_expired);
-        require(temp.status == TaskStatus.InProgress,DaoErrors.task_not_in_progress);
-
-        _numOfComments++;
-        comments[_numOfComments].postTime = now;
-        comments[_numOfComments].commenter = msg.sender;
-        comments[_numOfComments].comment = message;
-
-        tasks[taskID].comments.push(_numOfComments);
-
-        emit CommentPosted(taskID,msg.sender,_numOfComments);
     }
 
     function cancelTask(uint32 taskID) external {

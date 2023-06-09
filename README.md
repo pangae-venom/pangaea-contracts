@@ -8,6 +8,8 @@ DAO admission is open to everyone. A member can create bounties (tasks), claim t
 
 All members are allowed to create tasks. Each task has a bounty attached to it and task creator can also offer points to the bounty winner. For this demo, we have allowed the creator to offer as many points as they want but for the production code we are working on a more sophisticated point allocation system. The tasks are opened for a specific duration and any member can claim the task. Any member who claims a task can submit their solutions and once the time is up, it is solely upto the task creator to pick the winner. The Task Creator can also cancel the task. The contract keeps the bounty and pays the winner once the selection is done.
 
+#### Proposals
+
 ## DAO API
 
 #### To become a member of the dao.
@@ -49,6 +51,17 @@ function castVote(uint32 proposalID,uint8 val)
 ```
 
 where val takes 1 (yes), 2 (no) and 3 (abstain) values.
+
+#### To cast a vote with power
+```
+function castVoteWithPower(uint32 proposalID,uint8 val,uint32 N) 
+```
+
+where val takes 1 (yes), 2 (no) and 3 (abstain) values.
+
+A voter can cast a one person one vote without locking any tokens using the function castVote() but we allow a voter to lock N number of 
+tokens for the voting duration in exchange for casting N votes using castVoteWithPower() function. This isn't a perfect system obviously but it allows committed DAO members 
+to be more vocal. 
 
 #### To Finalize Vote
 ```

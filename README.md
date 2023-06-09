@@ -1,5 +1,13 @@
 # pangaea-contracts
 
+## DAO contract Layout
+
+DAO admission is open to everyone. A member can create bounties (tasks), claim tasks created by other members, create proposals and vote on proposals created by other members. Some functions require a little fee as an anti-spamming measure and to protect the DAO but that's an open issue as far as most DAOs are concerned.
+
+#### Tasks
+
+All members are allowed to create tasks. Each task has a bounty attached to it and task creator can also offer points to the bounty winner. For this demo, we have allowed the creator to offer as many points as they want but for the production code we are working on a more sophisticated point allocation system. The tasks are opened for a specific duration and any member can claim the task. Any member who claims a task can submit their solutions and once the time is up, it is solely upto the task creator to pick the winner. The Task Creator can also cancel the task. The contract keeps the bounty and pays the winner once the selection is done.
+
 ## DAO API
 
 #### To become a member of the dao.

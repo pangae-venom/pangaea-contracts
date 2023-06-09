@@ -1,5 +1,9 @@
 # pangaea-contracts
 
+<p align="center">
+  <img width="400" height="400" src="./assets/pangaea.jpeg">
+</p>
+
 ## DAO contract Layout
 
 DAO admission is open to everyone. A member can create bounties (tasks), claim tasks created by other members, create proposals and vote on proposals created by other members. Some functions require a little fee as an anti-spamming measure and to protect the DAO but that's an open issue as far as most DAOs are concerned.

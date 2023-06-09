@@ -7,6 +7,7 @@ pragma AbiHeader pubkey;
 import "./errors/DaoErrors.tsol";
 
 
+
 contract Dao {
     uint256 static _nonce;
     uint32 public _numOfProposals;
@@ -37,7 +38,7 @@ contract Dao {
         uint128 totalEarnings;
         uint128 assigned;
         uint32 acceptedTasks;
-        uint128 accumulatedVotes;
+        uint32 accumulatedVotes;
         uint32[] appliedTasks;
         uint32[] submittedTasks;
         uint32[] createdTasks;
@@ -57,15 +58,15 @@ contract Dao {
     struct Vote {
         uint32 startTime;
         uint32 endTime;
-        uint128 yes;
-        uint128 no;
-        uint128 abstain;
+        uint32 yes;
+        uint32 no;
+        uint32 abstain;
         address[] locks;
         address[] singles;
         VoteStatus status;
     }
 
-    mapping(uint32 => mapping(address => uint128)) voteLocks;
+    mapping(uint32 => mapping(address => uint32)) voteLocks;
     mapping(uint32 => mapping(address => uint8)) voteCast;
 
     enum AssigneeStatus {
@@ -140,7 +141,6 @@ contract Dao {
         memberExists[msg.sender] = true;
         members[msg.sender].uid = _memberUID;
         members[msg.sender].name = name;
-        msg.sender.transfer({value: 0, flag: 128, bounce: false});
         emit MemberAdded(msg.sender);
     }
 
@@ -150,7 +150,7 @@ contract Dao {
 
     function createTask(string title, string description,uint32 duration,uint32 points,uint128 bounty) external {
         if (memberExists[msg.sender] == false || bounty > 1 ever + msg.value) {
-            msg.sender.transfer({ value: 0, flag: 128, bounce: false });
+            msg.sender.transfer({ value: msg.value, flag: 0, bounce: false });
         }
         tvm.rawReserve(1 ever, 0);
         
@@ -257,22 +257,23 @@ contract Dao {
         emit MemberVoted(msg.sender,proposalID);
     }
 
-    function castVoteWithPower(uint32 proposalID,uint8 val,uint128 power) external {
+    function castVoteWithPower(uint32 proposalID,uint8 val,uint32 power) external {
         require(memberExists[msg.sender] == true,DaoErrors.member_does_not_exist);
         require(memberVote[msg.sender][proposalID] == false, DaoErrors.member_has_already_voted);
         require(val > 0 && val <= 3,DaoErrors.only_three_choices_allowed);
         require(votes[proposalID].endTime >= now && votes[proposalID].status == VoteStatus.InProgress, DaoErrors.proposal_not_active);
+        uint128 power2 = uint128(power) * 1 ever;
         require(power >= 2, DaoErrors.only_for_voting_power_more_than_one);
 
         tvm.rawReserve(1 ever, 0);
 
         bool bval = true;
-        if (power > msg.value + 1 ever) {
-            msg.sender.transfer({ value: 0, flag: 128, bounce: false});
+        if (power2 + 1 ever > msg.value) {
+            msg.sender.transfer({ value: msg.value, flag: 0, bounce: false});
             bval = false;
         }
 
-        require(bval,DaoErrors.not_enough_value_attached);
+        require(bval == true,DaoErrors.not_enough_value_attached);
 
         if (val == 1) {
             votes[proposalID].yes += power;
@@ -310,8 +311,8 @@ contract Dao {
 
         for (uint i = 0; i < addLen; i++) {
             address addr = votes[proposalID].locks[i];
-            uint128 val2 = voteLocks[proposalID][addr];
-            addr.transfer({ value: val2, flag: 128, bounce: false});
+            uint128 val2 = uint128(voteLocks[proposalID][addr]) * 1 ever;
+            addr.transfer({ value: val2, flag: 0, bounce: false});
         }
 
         emit VoteFinalized(proposalID);
@@ -357,7 +358,7 @@ contract Dao {
         tvm.accept();
 
         members[msg.sender].earned = 0;
-        msg.sender.transfer({ value: bounty, flag: 128, bounce: false});
+        msg.sender.transfer({ value: bounty, flag: 0, bounce: false});
 
         emit BountyPaid(msg.sender,bounty);
     }
@@ -372,7 +373,7 @@ contract Dao {
 
         uint128 bounty = temp.bounty;
 
-        msg.sender.transfer({ value: bounty, flag: 128, bounce: false});
+        msg.sender.transfer({ value: bounty, flag: 0, bounce: false});
         members[msg.sender].assigned -= bounty;
 
         emit TaskCancelled(taskID);

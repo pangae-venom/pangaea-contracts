@@ -5,6 +5,7 @@ import { FactorySource } from "../build/factorySource";
 
 let account1: Account;
 let account2: Account;
+let account3: Account;
 let dao: Contract<FactorySource["Dao"]>;
 let signer: Signer;
 
@@ -23,6 +24,12 @@ describe("Test Dao contract", async function () {
       publicKey: (await locklift.keystore.getSigner("1"))!.publicKey
     });
     account2 = accountTwoAddOperation;
+    const { account: accountThreeAddOperation } = await locklift.factory.accounts.addNewAccount({
+      type: WalletTypes.WalletV3,
+      value: toNano(10000),
+      publicKey: (await locklift.keystore.getSigner("2"))!.publicKey
+    });
+    account3 = accountThreeAddOperation;
   });
   describe("Contracts", async function () {
     it("Load contract factory", async function () {
@@ -189,7 +196,7 @@ describe("Test Dao contract", async function () {
 
       //account 2 votes yes
 
-      await dao.methods.castVote({proposalID: 1,val: 0}).send({from:account2.address,amount:locklift.utils.toNano(1)});
+      await dao.methods.castVote({proposalID: 1,val: 1}).send({from:account2.address,amount:locklift.utils.toNano(1)});
       const res2 = await dao.methods.getVote({proposalID: 1}).call();
       expect(Number(res2.value0.yes)).to.be.equal(1, "Wrong value");
 
@@ -201,15 +208,71 @@ describe("Test Dao contract", async function () {
 
     })
 
+    it("votes with a power of 100 and 50 on a proposal", async function() {
+
+      const title = "Proposal 2";
+      const description = "Second Proposal";
+      const duration = 1000;
+
+      await dao.methods.createProposal({title:title,description: description,duration:duration}).send({from:account1.address,amount:locklift.utils.toNano(1)});
+
+      const res = await dao.methods.getProposal({proposalID: 2}).call();
+      expect(res.value0.title).to.be.equal(title, "Wrong value");
+
+      const res2 = await dao.methods.getVote({proposalID: 2}).call();
+      expect(Number(res2.value0.status)).to.be.equal(1, "Wrong value");
+
+      const res3 = await dao.methods.getMember({member: account1.address}).call();
+      expect(Number(res3.value0.createdProposals.length)).to.be.equal(2, "Wrong value");
+
+      let power = 100;
+
+      await locklift.testing.increaseTime(100);
+
+      //account 2 votes yes
+
+      await dao.methods.castVoteWithPower({proposalID: 2,val: 1, power: power}).send({from:account2.address,amount:locklift.utils.toNano(power+2)});
+      const res4 = await dao.methods.getVote({proposalID: 2}).call();
+      expect(Number(res4.value0.yes)).to.be.equal(power, "Wrong value");
+
+      //Account3
+
+      // Member 3 joins dao
+
+      const mname = "Member3";
+      await dao.methods.joinDao({name:mname}).send({from:account3.address,amount:locklift.utils.toNano(2)});
+      let response = await dao.methods.isMember({person:account3.address}).call();
+      expect(response.exists).to.be.equal(true, "Wrong value");
+
+      let power2 = 50;
+
+      await locklift.testing.increaseTime(100);
+
+      //account 3 votes no
+
+      await dao.methods.castVoteWithPower({proposalID: 2,val: 2, power: power2}).send({from:account3.address,amount:locklift.utils.toNano(power2+2)});
+      const res4n = await dao.methods.getVote({proposalID: 2}).call();
+      expect(Number(res4n.value0.no)).to.be.equal(power2, "Wrong value");
+
+      await locklift.testing.increaseTime(1000);
+
+      await dao.methods.finalizeVote({proposalID: 2}).send({from:account3.address,amount:locklift.utils.toNano(2)});
+      const res5 = await dao.methods.getVote({proposalID: 2}).call();
+      expect(Number(res5.value0.status)).to.be.equal(2, "Wrong value");
+
+      //console.log(await locklift.provider.getBalance(dao.address));
+
+    })
+
     it("fetches contract state", async function() {
       const res = await dao.methods._memberUID({} as never).call();
-      expect(Number(res._memberUID)).to.be.equal(2, "Wrong value");
+      expect(Number(res._memberUID)).to.be.equal(3, "Wrong value");
 
       const res2 = await dao.methods._numOfTasks({} as never).call();
       expect(Number(res2._numOfTasks)).to.be.equal(3, "Wrong value");
 
       const res3 = await dao.methods._numOfProposals({} as never).call();
-      expect(Number(res3._numOfProposals)).to.be.equal(1, "Wrong value");
+      expect(Number(res3._numOfProposals)).to.be.equal(2, "Wrong value");
 
       const res4 = await dao.methods._numOfComments({} as never).call();
       expect(Number(res4._numOfComments)).to.be.equal(1, "Wrong value");
